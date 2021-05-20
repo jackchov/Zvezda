@@ -1,0 +1,107 @@
+import pygame
+
+class GameState():
+
+
+    def __init__(self):
+        self.state='intro_menu'
+
+
+    def intro_menu(self):
+        #print(pygame.mouse.get_pos()) #Wyświetlanie aktualnej pozycji myszy do testów
+        buttn_click=0
+        danger_flag=0
+        while buttn_click==0:
+            for event in pygame.event.get():
+                if event.type==pygame.QUIT:#Krzyżyk okna wyłącza grę
+                    pygame.quit()
+                if event.type==pygame.MOUSEBUTTONDOWN: #Dwie następne linijki sprawdzają, czy mysz jest na przycisku
+                    if pygame.mouse.get_pos()[0]>=(screen_width/2-64) and pygame.mouse.get_pos()[0]<=(screen_width/2+64):
+                        if pygame.mouse.get_pos()[1]>=(3*screen_height/4-64) and pygame.mouse.get_pos()[1]<=(3*screen_height/4+64):
+                            buttn_click=1
+                            self.state='plansza_awaria'
+
+        #screen.fill((0,0,0)) #screen.fill((R,G,B)), kolor tła, późniejsza wersja - dodoać obraz
+            if danger_flag==0:
+                screen.blit(background_menu,(-100,-50))#(nazwa obrazu, pozycja 0,0 - lewy dolny róg)
+                screen.blit(red_button,(screen_width/2-64,3*screen_height/4-64))
+                screen.blit(danger,(screen_width/2-128,screen_height/3-128+30))
+                pygame.display.update()
+                danger_flag=1
+                clock.tick(1)
+            else:
+                screen.blit(background_menu,(-100,-50))#(nazwa obrazu, pozycja 0,0 - lewy dolny róg)
+                screen.blit(red_button,(screen_width/2-64,3*screen_height/4-64))
+                #screen.blit(danger,(screen_width/2-128,screen_height/3-128+30))
+                pygame.display.update()
+                danger_flag=0
+                clock.tick(2)
+        #pygame.display.flip()
+
+
+    def plansza_awaria(self):
+        imageX= 0; # x coordnate of image
+        imageY= 0; # y coordinate of image
+        while imageX<=800:
+            for event in pygame.event.get():
+                if event.type==pygame.QUIT:#Krzyżyk okna wyłącza grę
+                    pygame.quit()
+            imageX =imageX + 10;
+            imageY= imageY + 7.5;
+            screen.blit(background,(0,0))#(nazwa obrazu, pozycja 0,0 - lewy dolny róg)
+            screen.blit(statek_rotated,(0+imageX,0+ imageY)) # paint to screen
+            pygame.display.update()
+            clock.tick(20)
+            if imageX==800:
+               self.state='plansza_2'
+        #pygame.display.flip()
+
+
+    def plansza_2(self):
+        for event in pygame.event.get():
+            if event.type==pygame.QUIT:#Krzyżyk okna wyłącza grę
+                pygame.quit()
+        screen.blit(background_plansza2_resize,(0,0))
+        pygame.display.update()
+
+
+    def state_menager(self):
+        if self.state=='intro_menu':
+            self.intro_menu()
+        elif self.state=='plansza_awaria':
+            self.plansza_awaria()
+        elif self.state=='plansza_2':
+            self.plansza_2()
+
+
+
+#inicjalizacja pygame
+pygame.init()
+clock=pygame.time.Clock()
+game_state=GameState()
+
+#Tworzenie okna głównego
+screen_width=800
+screen_height=600
+screen=pygame.display.set_mode((800,600))
+    #Tytuł i ikonka
+pygame.display.set_caption("Lost in space")#Tu wpisać nazwę gry
+icon=pygame.image.load('project.png')#nazwa pliku ikonki png, najlepiej z przezroczystym tłem. Jeżeli jest w innym folderze, dodać ścieżkę
+pygame.display.set_icon(icon)
+    #Tło ekranu startowego
+background=pygame.image.load('tlo.png')
+
+#Intro menu
+red_button=pygame.image.load("rec.png")
+background_menu=pygame.image.load('tlo_menu.jpg')
+statek=pygame.image.load('ship.png')
+statek_rotated=pygame.transform.rotate(statek,-90)
+danger=pygame.image.load('caution.png')
+#plansza 2
+background_plansza2=pygame.image.load('plansza2.jpg')
+background_plansza2_resize = pygame.transform.scale(background_plansza2, (800,600))
+#MAIN GAME LOOP
+running=True
+while running:
+    game_state.state_menager()
+    clock.tick(60)
