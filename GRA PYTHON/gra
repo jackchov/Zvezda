@@ -112,6 +112,7 @@ class GameState():
         rect= surf.get_rect()
         screen.blit(surf, (SCREEN_WIDTH / 2-700, SCREEN_HEIGHT-250))
         myfont = pygame.font.SysFont('Times New Roman', 22)
+        myfont1 = pygame.font.SysFont('Times New Roman', 16)
         riddlefont = pygame.font.SysFont('Times New Roman', 40)
 
         textsurface4 = riddlefont.render("WHAT LIVES ON IT'S OWN SUBSTANCE,", False, (255, 255, 255))
@@ -123,12 +124,19 @@ class GameState():
         textsurface = myfont.render('You think for a bit and what comes to mind is:', False, (255, 255, 255))
         screen.blit(textsurface, (10, 650))
 
-
-
-
         textsurface0 = myfont.render(user_text, True, (255, 255, 255))
         screen.blit(textsurface0, (10, 675))
 
+        textsurface6 = myfont1.render('(REMEMBER TO PRESS ENTER AFTER THE ANSWER)', False, (255, 255, 255))
+        screen.blit(textsurface6, (500, 850))
+
+        textsurface7 = myfont1.render('(IF YOU DO NOT KNOW THE ANSWER WRITE "I GIVE UP")', False, (255, 255, 255))
+        screen.blit(textsurface7, (487, 875))
+
+        pygame.display.flip()
+        pygame.event.pump()
+        pygame.time.delay(1000)
+        
         if user_text == 'candle' or user_text == 'a candle':
             textsurface6 = myfont.render('"Correct! As reward, as promised, you get a hint."', True, (255, 255, 255))
             screen.blit(textsurface6, (10, 700))
@@ -152,6 +160,29 @@ class GameState():
             self.state = 'move_from1'
         pygame.display.flip()
 
+    def plansza_1_again(self): #plansza 1 gdzie nic sie nie dzieje, uruchamiana gdy gracz ponownie wejdzie na pole 1
+        screen.blit(plansza1, (0,0))
+        pygame.display.flip()
+        pygame.event.pump()
+        pygame.time.delay(800)
+        surf = pygame.Surface((1400, 250))
+        surf.fill((0, 0, 0))
+        rect= surf.get_rect()
+        screen.blit(surf, (SCREEN_WIDTH / 2-700, SCREEN_HEIGHT-250))
+        myfont = pygame.font.SysFont('Times New Roman', 22)
+        pygame.display.flip()
+        pygame.event.pump()
+        pygame.time.delay(500)
+
+        textsurface = myfont.render('You find yourself again in this place where you encountered the mysterious voice', False, (255, 255, 255))
+        screen.blit(textsurface, (10, 650))
+
+        textsurface0 = myfont.render('Nothing is happening. You decide to continue moving', False, (255, 255, 255))
+        screen.blit(textsurface0, (10, 625))
+
+        pygame.time.delay(4000)
+        self.state = 'move_from1'
+
     def move_from1(self):
         screen.fill((0, 0, 0))
         riddlefont = pygame.font.SysFont('Times New Roman', 40)
@@ -165,15 +196,183 @@ class GameState():
         textsurface2 = riddlefont.render(user_text, True, (255, 255, 255))
         screen.blit(textsurface2, (100, 300))
 
-        '''
         if user_text == 'east' or user_text == 'the east':
-            #tutaj dodam kod po zbudowaniu funkcji na inne pola, tak samo else
-
+            textsurface3 = riddlefont.render("You decided to move towards the East", False, (255, 255, 255))
+            screen.blit(textsurface3, (100, 350))
+            pygame.display.flip()
+            pygame.time.delay(3000)
+            #self.state = 'plansza_2_again'
+            
         elif user_text == 'south' or user_text == 'the south':
-
-
-            '''
+            textsurface3 = riddlefont.render("You decided to move towards the South", False, (255, 255, 255))
+            screen.blit(textsurface3, (100, 350))
+            pygame.display.flip()
+            pygame.time.delay(3000)
+            #self.state = 'plansza_4_1'
+            
         pygame.display.flip()
+
+    def plansza_5_1(self):
+        screen.blit(plansza1, (0,0)) # zmienić obrazek na ten od Julii
+        pygame.display.flip()
+        pygame.event.pump()
+        pygame.time.delay(800)
+        surf = pygame.Surface((1400, 250))
+        surf.fill((0, 0, 0))
+        rect= surf.get_rect()
+        screen.blit(surf, (SCREEN_WIDTH / 2-700, SCREEN_HEIGHT-250))
+        myfont = pygame.font.SysFont('Times New Roman', 22)
+        pygame.display.flip()
+        pygame.event.pump()
+        pygame.time.delay(500)
+
+            #zawijanie tekstu okazało się bardziej skomplikowane, na razie wypisuje każda linjke osobno
+        textsurface = myfont.render('On this site you encounter a weird boulder with some words carved in it', False, (255, 255, 255))
+        screen.blit(textsurface, (10, 650))
+
+        textsurface2 = myfont.render('It did not look like any language you knew, yet the meaning somhow came effortlessly to you.', False, (255, 255, 255))
+        screen.blit(textsurface2, (10, 675))
+
+        textsurface2 = myfont.render('"Hm. A riddle."- you say to yourself- "what a weird place for a boulder with a riddle"', False, (255, 255, 255))
+        screen.blit(textsurface2, (10, 700))
+
+        textsurface3 = myfont.render('You decided to give it a try', False, (255, 255, 255))
+        screen.blit(textsurface3, (10, 725))
+
+        pygame.display.update()
+
+        pygame.time.delay(11000)
+
+        self.state = 'plansza_5_2'
+
+    def plansza_5_2(self):
+        screen.blit(plansza1, (0,0)) #zmienić grafikę na taka jaka co w 5_1
+        surf = pygame.Surface((1400, 250))
+        surf.fill((0, 0, 0))
+        rect= surf.get_rect()
+        screen.blit(surf, (SCREEN_WIDTH / 2-700, SCREEN_HEIGHT-250))
+        myfont = pygame.font.SysFont('Times New Roman', 22)
+        myfont1 = pygame.font.SysFont('Times New Roman', 16)
+        riddlefont = pygame.font.SysFont('Times New Roman', 40)
+
+        textsurface4 = riddlefont.render("WHAT IS ALWAYS COMING, BUT NEVER ARRIVES?", False, (255, 255, 255))
+        screen.blit(textsurface4, (100, 200))
+
+        textsurface = myfont.render('You think for a bit and what comes to mind is:', False, (255, 255, 255))
+        screen.blit(textsurface, (10, 650))
+
+        textsurface0 = myfont.render(user_text, True, (255, 255, 255))
+        screen.blit(textsurface0, (10, 675))
+
+
+        textsurface6 = myfont1.render('(REMEMBER TO PRESS ENTER AFTER THE ANSWER)', False, (255, 255, 255))
+        screen.blit(textsurface6, (500, 850))
+
+        textsurface7 = myfont1.render('(IF YOU DO NOT KNOW THE ANSWER WRITE "I GIVE UP")', False, (255, 255, 255))
+        screen.blit(textsurface7, (487, 875))
+
+        pygame.display.flip()
+        pygame.event.pump()
+        pygame.time.delay(1000)
+
+        if user_text == 'tommorow' or user_text == 'a next day' or user_text == 'the next day':
+            textsurface6 = myfont.render('You carve in your answer to spoil the fun for other shipwreck survivors with memory loss', True, (255, 255, 255))
+            screen.blit(textsurface6, (10, 700))
+            textsurface7 = myfont.render('You smile proudly at your doing. Weirdly enough, another writing appears on the stone. it says:', True, (255, 255, 255))
+            screen.blit(textsurface7, (10, 725))
+            textsurface8 = myfont.render('"What lives here is fast but cannot see what moves slow"', True, (255, 255, 255))
+            screen.blit(textsurface8, (10, 750))
+            textsurface9 = myfont.render('A thought, that if dinosaurs lived here you would surely notice appears in your head.', True, (255, 255, 255))
+            screen.blit(textsurface9, (10, 775))
+            textsurface10 = myfont.render('You shrug and decide to keep that information in mind anyway. Just in case.', True, (255, 255, 255))
+            screen.blit(textsurface10, (10, 800))
+            pygame.display.flip()
+            pygame.time.delay(17000)
+            self.state = 'move_from5'
+
+        elif user_text == 'i give up' or user_text == 'give up':
+            textsurface6 = myfont.render('You wanted to solve the riddle for some fun but the answer did not come to you', True, (255, 255, 255))
+            screen.blit(textsurface6, (10, 700))
+            textsurface7 = myfont.render('Annoyed, you kick the boulder, but it does nothing but hurt your feet.', True, (255, 255, 255))
+            screen.blit(textsurface7, (10, 725))
+            textsurface8 = myfont.render('You mumble something about not wanting to do the riddle anyway and pick your next destination', True, (255, 255, 255))
+            screen.blit(textsurface8, (10, 750))
+            pygame.display.flip()
+            pygame.time.delay(10000)
+            self.state = 'move_from5'
+        pygame.display.flip()
+
+    def move_from5(self):
+                screen.fill((0, 0, 0))
+                riddlefont = pygame.font.SysFont('Times New Roman', 40)
+                myfont1 = pygame.font.SysFont('Times New Roman', 16)
+
+                textsurface = riddlefont.render("It seems you could go in any derection from here. North, east, south or west.", False, (255, 255, 255))
+                screen.blit(textsurface, (100, 200))
+
+                textsurface1 = riddlefont.render("You decide to go:", False, (255, 255, 255))
+                screen.blit(textsurface1, (100, 250))
+
+                textsurface2 = riddlefont.render(user_text, True, (255, 255, 255))
+                screen.blit(textsurface2, (100, 300))
+
+                textsurface6 = myfont1.render('(REMEMBER TO PRESS ENTER AFTER THE ANSWER)', False, (255, 255, 255))
+                screen.blit(textsurface6, (500, 850))
+
+                pygame.display.flip()
+                pygame.event.pump()
+                pygame.time.delay(1000)
+
+                if user_text == 'east' or user_text == 'the east':
+                    textsurface3 = riddlefont.render("You decided to move towards the East", False, (255, 255, 255))
+                    screen.blit(textsurface3, (100, 350))
+                    pygame.display.flip()
+                    pygame.time.delay(3000)
+                    #self.state = 'plansza_6_1'
+
+                elif user_text == 'south' or user_text == 'the south':
+                    textsurface3 = riddlefont.render("You decided to move towards the South", False, (255, 255, 255))
+                    screen.blit(textsurface3, (100, 350))
+                    pygame.display.flip()
+                    pygame.time.delay(3000)
+                    #self.state = 'plansza_8_1'
+
+                elif user_text == 'north' or user_text == 'the north':
+                    textsurface3 = riddlefont.render("You decided to move towards the North", False, (255, 255, 255))
+                    screen.blit(textsurface3, (100, 350))
+                    pygame.display.flip()
+                    pygame.time.delay(3000)
+                    #self.state = 'plansza_2_again'
+
+                elif user_text == 'west' or user_text == 'the west':
+                    textsurface3 = riddlefont.render("You decided to move towards the West", False, (255, 255, 255))
+                    screen.blit(textsurface3, (100, 350))
+                    pygame.display.flip()
+                    pygame.time.delay(3000)
+                    #self.state = 'plansza_4_1' or 'plansza_4_again' #dodać sprawdzenie czy użytkownik już tam nie był
+
+    def plansza_5_again(self): #plansza 1 gdzie nic sie nie dzieje, uruchamiana gdy gracz ponownie wejdzie na pole 1
+        screen.blit(plansza1, (0,0)) # zmień obraz na to co potem w 5
+        pygame.display.flip()
+        pygame.event.pump()
+        pygame.time.delay(800)
+        surf = pygame.Surface((1400, 250))
+        surf.fill((0, 0, 0))
+        rect= surf.get_rect()
+        screen.blit(surf, (SCREEN_WIDTH / 2-700, SCREEN_HEIGHT-250))
+        myfont = pygame.font.SysFont('Times New Roman', 22)
+        pygame.display.flip()
+        pygame.event.pump()
+        pygame.time.delay(500)
+
+        textsurface = myfont.render('You find yourself again in the place with the weird looking stone. It still looks out of place.', False, (255, 255, 255))
+        screen.blit(textsurface, (10, 650))
+
+        textsurface0 = myfont.render('Nothing is happening. You decide to continue moving', False, (255, 255, 255))
+        screen.blit(textsurface0, (10, 625))
+
+        pygame.time.delay(4000)
+        self.state = 'move_from5'
 
 
     def state_menager(self):
@@ -189,7 +388,12 @@ class GameState():
             self.plansza_1_2()
         elif self.state == 'move_from1':
             self.move_from1()
-
+        elif self.state == 'plansza_5_1':
+            self.plansza_5_1()
+        elif self.state == 'plansza_5_2':
+            self.plansza_5_2()
+        elif self.state == 'move_from5':
+            self.move_from5()
 
 #inicjalizacja pygame
 pygame.init()
@@ -234,3 +438,4 @@ while running:
                 user_text = ''
             else:
                 user_text += event.unicode
+                user_text = (user_text.lower())
