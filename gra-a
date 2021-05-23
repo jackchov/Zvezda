@@ -1,0 +1,240 @@
+import pygame
+
+class GameState():
+
+
+    def __init__(self):
+        self.state='plansza_1_1'
+
+
+    def intro_menu(self):
+        #print(pygame.mouse.get_pos()) #Wyświetlanie aktualnej pozycji myszy do testów
+        buttn_click=0
+        danger_flag=0
+        while buttn_click==0:
+            for event in pygame.event.get():
+                if event.type==pygame.QUIT:#Krzyżyk okna wyłącza grę
+                    pygame.quit()
+                if event.type==pygame.MOUSEBUTTONDOWN: #Dwie następne linijki sprawdzają, czy mysz jest na przycisku
+                    if pygame.mouse.get_pos()[0]>=(SCREEN_WIDTH/2-64) and pygame.mouse.get_pos()[0]<=(SCREEN_WIDTH/2+64):
+                        if pygame.mouse.get_pos()[1]>=(3*SCREEN_HEIGHT/4-64) and pygame.mouse.get_pos()[1]<=(3*SCREEN_HEIGHT/4+64):
+                            buttn_click=1
+                            self.state='plansza_awaria'
+
+        #screen.fill((0,0,0)) #screen.fill((R,G,B)), kolor tła, późniejsza wersja - dodoać obraz
+            if danger_flag==0:
+                screen.blit(background_menu,(-100,-50))#(nazwa obrazu, pozycja 0,0 - lewy dolny róg)
+                screen.blit(red_button,(SCREEN_WIDTH/2-64,3*SCREEN_HEIGHT/4-64))
+                screen.blit(danger,(SCREEN_WIDTH/2-128,SCREEN_HEIGHT/3-128+30))
+                pygame.display.update()
+                danger_flag=1
+                clock.tick(1)
+            else:
+                screen.blit(background_menu,(-100,-50))#(nazwa obrazu, pozycja 0,0 - lewy dolny róg)
+                screen.blit(red_button,(SCREEN_WIDTH/2-64,3*SCREEN_HEIGHT/4-64))
+                #screen.blit(danger,(SCREEN_WIDTH/2-128,SCREEN_HEIGHT/3-128+30))
+                pygame.display.update()
+                danger_flag=0
+                clock.tick(2)
+        #pygame.display.flip()
+
+
+    def plansza_awaria(self):
+        imageX= 0; # x coordnate of image
+        imageY= 0; # y coordinate of image
+        while imageX<=800:
+            for event in pygame.event.get():
+                if event.type==pygame.QUIT:#Krzyżyk okna wyłącza grę
+                    pygame.quit()
+            imageX =imageX + 10;
+            imageY= imageY + 7.5;
+            screen.blit(background,(0,0))#(nazwa obrazu, pozycja 0,0 - lewy dolny róg)
+            screen.blit(statek_rotated,(0+imageX,0+ imageY)) # paint to screen
+            pygame.display.update()
+            clock.tick(20)
+            if imageX==800:
+               self.state='plansza_2'
+        #pygame.display.flip()
+
+
+    def plansza_2(self):
+        for event in pygame.event.get():
+            if event.type==pygame.QUIT:#Krzyżyk okna wyłącza grę
+                pygame.quit()
+        screen.blit(background_plansza2_resize,(0,0))
+        pygame.display.update()
+
+    def plansza_1_1(self): #zabaczyc dodatkowo jak zrobic opoznienie, tak zeby nie migało? tło, pozniej czarne tlo, pozniej tekst
+        screen.blit(plansza1, (0,0))
+        pygame.display.flip()
+        pygame.event.pump()
+        pygame.time.delay(800)
+        surf = pygame.Surface((1400, 250))
+        surf.fill((0, 0, 0))
+        rect= surf.get_rect()
+        screen.blit(surf, (SCREEN_WIDTH / 2-700, SCREEN_HEIGHT-250))
+        myfont = pygame.font.SysFont('Times New Roman', 22)
+        pygame.display.flip()
+        pygame.event.pump()
+        pygame.time.delay(500)
+
+            #zawijanie tekstu okazało się bardziej skomplikowane, na razie wypisuje każda linjke osobno
+        textsurface = myfont.render('As you go forward, in the darkness you hear an unfamiliar whisper.', False, (255, 255, 255))
+        screen.blit(textsurface, (10, 650))
+
+        textsurface2 = myfont.render('"South from here danger awaits, it is standing in the way of what you are trying to obtain"', False, (255, 255, 255))
+        screen.blit(textsurface2, (10, 675))
+
+        textsurface2 = myfont.render('You look around trying to make sense of the situation but there is no one to be seen. The voice seems to just appear directly in your head. It laughs, softly.', False, (255, 255, 255))
+        screen.blit(textsurface2, (10, 700))
+
+        textsurface3 = myfont.render('"Indulge me. I will give you a hint, provided you solve one of my riddles"', False, (255, 255, 255))
+        screen.blit(textsurface3, (10, 725))
+
+        textsurface3 = myfont.render('"If it is too much for you say- "i give up""', False, (255, 255, 255))
+        screen.blit(textsurface3, (10, 750))
+
+
+        pygame.display.update()
+
+        #nie wiem czemu MOUSEBUTTONDOWN kiepsko dzialalo (50/50 szansa na zawieszenie u mnie), wiec po czasie automatycznie przelaczy sie do nastepnego "slajdu"
+        pygame.time.delay(11000)
+
+        self.state = 'plansza_1_2'
+
+
+
+
+    def plansza_1_2(self):
+        screen.blit(plansza1, (0,0))
+        surf = pygame.Surface((1400, 250))
+        surf.fill((0, 0, 0))
+        rect= surf.get_rect()
+        screen.blit(surf, (SCREEN_WIDTH / 2-700, SCREEN_HEIGHT-250))
+        myfont = pygame.font.SysFont('Times New Roman', 22)
+        riddlefont = pygame.font.SysFont('Times New Roman', 40)
+
+        textsurface4 = riddlefont.render("WHAT LIVES ON IT'S OWN SUBSTANCE,", False, (255, 255, 255))
+        screen.blit(textsurface4, (100, 200))
+
+        textsurface5 = riddlefont.render("BUT DIES AS SOON AS IT DEVOURS ITSELF ?", False, (255, 255, 255))
+        screen.blit(textsurface5, (100, 250))
+
+        textsurface = myfont.render('You think for a bit and what comes to mind is:', False, (255, 255, 255))
+        screen.blit(textsurface, (10, 650))
+
+
+
+
+        textsurface0 = myfont.render(user_text, True, (255, 255, 255))
+        screen.blit(textsurface0, (10, 675))
+        
+
+        if user_text == 'candle' or user_text == 'a candle':
+            pygame.display.flip()
+            pygame.event.pump()
+            pygame.time.delay(500)
+            textsurface6 = myfont.render('"Correct! As reward, as promised, you get a hint."', True, (255, 255, 255))
+            screen.blit(textsurface6, (10, 700))
+            textsurface7 = myfont.render('"When facing a danger from the South keep in mind that [INCLUDE HINT TO PLACE NR 4]"', True, (255, 255, 255))
+            screen.blit(textsurface7, (10, 725))
+            textsurface8 = myfont.render('"Now go, adventurer..."', True, (255, 255, 255))
+            screen.blit(textsurface7, (10, 725))
+            pygame.display.flip()
+            pygame.time.delay(4000)
+            self.state = 'move_from1'
+
+        elif user_text == 'i give up' or user_text == 'give up':
+            textsurface6 = myfont.render('"Too bad. Good luck without knowing the hint. You are gonna need it"', True, (255, 255, 255))
+            screen.blit(textsurface6, (10, 700))
+            textsurface7 = myfont.render('The voice disappers, but its omnious sound still rings in your head', True, (255, 255, 255))
+            screen.blit(textsurface7, (10, 725))
+            textsurface8 = myfont.render('Still, you need to move forward', True, (255, 255, 255))
+            screen.blit(textsurface7, (10, 725))
+            pygame.display.flip()
+            pygame.time.delay(4000)
+            self.state = 'move_from1'
+        pygame.display.flip()
+
+    def move_from1(self):
+        screen.fill((0, 0, 0))
+        riddlefont = pygame.font.SysFont('Times New Roman', 40)
+
+        textsurface = riddlefont.render("It seems you could only go east or south from here.", False, (255, 255, 255))
+        screen.blit(textsurface, (100, 200))
+
+        textsurface1 = riddlefont.render("You decide to go:", False, (255, 255, 255))
+        screen.blit(textsurface1, (100, 250))
+
+        textsurface2 = riddlefont.render(user_text, True, (255, 255, 255))
+        screen.blit(textsurface2, (100, 300))
+
+        '''
+        if user_text == 'east' or user_text == 'the east':
+            #tutaj dodam kod po zbudowaniu funkcji na inne pola, tak samo else
+
+        elif user_text == 'south' or user_text == 'the south':
+
+
+            '''
+        pygame.display.flip()
+
+
+    def state_menager(self):
+        if self.state=='intro_menu':
+            self.intro_menu()
+        elif self.state=='plansza_awaria':
+            self.plansza_awaria()
+        elif self.state=='plansza_2':
+            self.plansza_2()
+        elif self.state == 'plansza_1_1':
+            self.plansza_1_1()
+        elif self.state == 'plansza_1_2':
+            self.plansza_1_2()
+        elif self.state == 'move_from1':
+            self.move_from1()
+
+
+#inicjalizacja pygame
+pygame.init()
+clock=pygame.time.Clock()
+game_state=GameState()
+
+#Tworzenie okna głównego
+SCREEN_WIDTH = 1400
+SCREEN_HEIGHT = 900
+screen=pygame.display.set_mode((1400,900))
+    #Tytuł i ikonka
+pygame.display.set_caption("Lost in space")#Tu wpisać nazwę gry
+icon=pygame.image.load('project.png')#nazwa pliku ikonki png, najlepiej z przezroczystym tłem. Jeżeli jest w innym folderze, dodać ścieżkę
+pygame.display.set_icon(icon)
+    #Tło ekranu startowego
+background=pygame.image.load('tlo.png')
+
+#Intro menu
+user_text = ''
+red_button=pygame.image.load("rec.png")
+background_menu=pygame.image.load('tlo_menu.jpg')
+statek=pygame.image.load('ship.png')
+statek_rotated=pygame.transform.rotate(statek,-90)
+danger=pygame.image.load('caution.png')
+#plansza 2
+background_plansza2=pygame.image.load('plansza2.jpg')
+background_plansza2_resize = pygame.transform.scale(background_plansza2, (800,600))
+#plansza 1- zagadka, hint 4
+plansza1 = pygame.image.load('tlo1.jpg')
+#MAIN GAME LOOP
+running=True
+while running:
+    game_state.state_menager()
+    clock.tick(60)
+    for event in pygame.event.get(): #zamiast wstawiania do każdej planszy osobno powinno zadziałać tutaj
+        if event.type==pygame.QUIT:
+            pygame.quit()
+        if event.type == pygame.KEYDOWN: #daje możliwośc pisania w odpowienich polach użytkownikowi ale trzaba wcisnąć enter żeby tekst sie wyzerował na następny input
+            if event.key == pygame.K_BACKSPACE:
+                user_text = user_text[:-1]
+            elif event.key == pygame.K_RETURN:
+                user_text = ''
+            else:
+                user_text += event.unicode
