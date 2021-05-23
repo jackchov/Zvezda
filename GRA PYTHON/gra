@@ -64,13 +64,19 @@ class GameState():
         screen.blit(background_plansza2_resize,(0,0))
         pygame.display.update()
 
-    def plansza_1_1(self): #zabaczyc dodatkowo jak zrobic opoznienie, tak zeby nie migało? tło, pozniej czarne tlo, pozniej tekst
+    def plansza_1_1(self):
         screen.blit(plansza1, (0,0))
+        pygame.display.flip()
+        pygame.event.pump()
+        pygame.time.delay(800)
         surf = pygame.Surface((1400, 250))
         surf.fill((0, 0, 0))
         rect= surf.get_rect()
         screen.blit(surf, (SCREEN_WIDTH / 2-700, SCREEN_HEIGHT-250))
         myfont = pygame.font.SysFont('Times New Roman', 22)
+        pygame.display.flip()
+        pygame.event.pump()
+        pygame.time.delay(500)
 
             #zawijanie tekstu okazało się bardziej skomplikowane, na razie wypisuje każda linjke osobno
         textsurface = myfont.render('As you go forward, in the darkness you hear an unfamiliar whisper.', False, (255, 255, 255))
