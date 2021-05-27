@@ -4,7 +4,7 @@ class GameState():
 
 
     def __init__(self):
-        self.state='plansza_2'
+        self.state='intro_menu'
 
 
     def intro_menu(self):
