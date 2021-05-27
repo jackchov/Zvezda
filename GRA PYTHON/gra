@@ -3,8 +3,8 @@ import pygame
 class GameState():
 
 
-    def __init__(self): 
-        self.state='intro_menu'
+    def __init__(self):
+        self.state='plansza_2'
 
 
     def intro_menu(self):
@@ -23,38 +23,39 @@ class GameState():
 
         #screen.fill((0,0,0)) #screen.fill((R,G,B)), kolor tła, późniejsza wersja - dodoać obraz
             if danger_flag==0:
-                screen.blit(background_menu,(-100,-50))#(nazwa obrazu, pozycja 0,0 - lewy dolny róg)
+                screen.blit(background_menu_resized,(0,0))#(nazwa obrazu, pozycja 0,0 - lewy dolny róg)
                 screen.blit(red_button,(SCREEN_WIDTH/2-64,3*SCREEN_HEIGHT/4-64))
-                screen.blit(danger,(SCREEN_WIDTH/2-128,SCREEN_HEIGHT/3-128+30))
+                screen.blit(danger,(SCREEN_WIDTH/2-201,SCREEN_HEIGHT/3-62+30))
+                screen.blit(emergency_txt,(SCREEN_WIDTH/2-327,SCREEN_HEIGHT-100))
                 pygame.display.update()
                 danger_flag=1
                 clock.tick(1)
             else:
-                screen.blit(background_menu,(-100,-50))#(nazwa obrazu, pozycja 0,0 - lewy dolny róg)
+                screen.blit(background_menu_resized,(0,0))#(nazwa obrazu, pozycja 0,0 - lewy dolny róg)
                 screen.blit(red_button,(SCREEN_WIDTH/2-64,3*SCREEN_HEIGHT/4-64))
-                #screen.blit(danger,(SCREEN_WIDTH/2-128,SCREEN_HEIGHT/3-128+30))
+                screen.blit(emergency_txt,(SCREEN_WIDTH/2-327,SCREEN_HEIGHT-100))
                 pygame.display.update()
                 danger_flag=0
                 clock.tick(2)
         #pygame.display.flip()
 
 
+
     def plansza_awaria(self):
         imageX= 0; # x coordnate of image
         imageY= 0; # y coordinate of image
-        while imageX<=800:
+        while imageX<=1400:
             for event in pygame.event.get():
                 if event.type==pygame.QUIT:#Krzyżyk okna wyłącza grę
                     pygame.quit()
             imageX =imageX + 10;
-            imageY= imageY + 7.5;
-            screen.blit(background,(0,0))#(nazwa obrazu, pozycja 0,0 - lewy dolny róg)
+            imageY= imageY + 6.4;
+            screen.blit(background_resized,(0,0))#(nazwa obrazu, pozycja 0,0 - lewy dolny róg)
             screen.blit(statek_rotated,(0+imageX,0+ imageY)) # paint to screen
             pygame.display.update()
             clock.tick(20)
-            if imageX==800:
+            if imageX==1400:
                self.state='plansza_2'
-        #pygame.display.flip()
 
 
     def plansza_2(self):
@@ -63,7 +64,104 @@ class GameState():
                 pygame.quit()
         screen.blit(background_plansza2_resize,(0,0))
         pygame.display.update()
+        pygame.event.pump()
+        pygame.time.delay(800)
+        surf = pygame.Surface((1400, 250))
+        surf.fill((0, 0, 0))
+        rect= surf.get_rect()
+        screen.blit(surf, (SCREEN_WIDTH / 2-700, SCREEN_HEIGHT-250))
+        myfont = pygame.font.SysFont('Times New Roman', 22)
+        pygame.display.flip()
+        pygame.event.pump()
+        pygame.time.delay(500)
 
+
+            #zawijanie tekstu okazało się bardziej skomplikowane, na razie wypisuje każda linjke osobno
+        textsurface = myfont.render('"I am alive."', False, (255, 255, 255))
+        screen.blit(textsurface, (10, 650))
+
+        textsurface2 = myfont.render('You said and looked around. You were surrounded only by sand and the burnt remains of a spaceship.', False, (255, 255, 255))
+        screen.blit(textsurface2, (10, 675))
+
+        textsurface2 = myfont.render('"But who am I? And where am I?"', False, (255, 255, 255))
+        screen.blit(textsurface2, (10, 700))
+
+        textsurface3 = myfont.render('You put your hands in your pockets. You felt a piece of paper under your fingers.', False, (255, 255, 255))
+        screen.blit(textsurface3, (10, 725))
+
+        textsurface3 = myfont.render('"Let\'s see what do we got there."', False, (255, 255, 255))
+        screen.blit(textsurface3, (10, 750))
+
+        textsurface4 = myfont.render('NEXT >>', False, (255, 255, 255))
+        screen.blit(textsurface4, (SCREEN_WIDTH-120, SCREEN_HEIGHT-60))
+
+        pygame.display.update()
+        #pygame.time.delay(11000)
+        #self.state='plansza_2_2'
+        next=0
+        while next==0:
+            for event in pygame.event.get():
+                if event.type==pygame.QUIT:#Krzyżyk okna wyłącza grę
+                    pygame.quit()
+                if event.type==pygame.MOUSEBUTTONDOWN: #Dwie następne linijki sprawdzają, czy mysz jest na przycisku
+                    if pygame.mouse.get_pos()[0]>=(SCREEN_WIDTH/2-120) and pygame.mouse.get_pos()[1]>=(SCREEN_HEIGHT-60):
+                        next=1
+                        self.state='plansza_2_2'
+    def plansza_2_2(self):
+        screen.blit(background_plansza2_resize,(0,0))
+        screen.blit(kartka_resize,(SCREEN_WIDTH/2-287,SCREEN_HEIGHT/2-400))
+        screen.blit(cross,(SCREEN_WIDTH/2+287-110,SCREEN_HEIGHT/2-400+10))
+        pygame.display.update()
+        cancel=0
+        while cancel==0:
+            for event in pygame.event.get():
+                if event.type==pygame.QUIT:#Krzyżyk okna wyłącza grę
+                    pygame.quit()
+                if event.type==pygame.MOUSEBUTTONDOWN: #Dwie następne linijki sprawdzają, czy mysz jest na przycisku
+                    if pygame.mouse.get_pos()[0]>=(SCREEN_WIDTH/2+287-110) and pygame.mouse.get_pos()[0]<=(SCREEN_WIDTH/2+287-110+81):
+                        if pygame.mouse.get_pos()[1]>=(SCREEN_HEIGHT/2-400+10) and pygame.mouse.get_pos()[1]<=(SCREEN_HEIGHT/2-400+10+122):
+                            cancel=1
+                            self.state='plansza_2_3'
+    def plansza_2_3(self):
+        screen.blit(background_plansza2_resize,(0,0))
+        pygame.display.update()
+        pygame.display.update()
+        pygame.event.pump()
+        pygame.time.delay(800)
+        surf = pygame.Surface((1400, 250))
+        surf.fill((0, 0, 0))
+        rect= surf.get_rect()
+        screen.blit(surf, (SCREEN_WIDTH / 2-700, SCREEN_HEIGHT-250))
+        myfont = pygame.font.SysFont('Times New Roman', 22)
+        pygame.display.flip()
+        pygame.event.pump()
+        pygame.time.delay(500)
+
+
+            #zawijanie tekstu okazało się bardziej skomplikowane, na razie wypisuje każda linjke osobno
+        textsurface = myfont.render('"It seems that I am a wizard. Maybe I can find more pages from the diary."', False, (255, 255, 255))
+        screen.blit(textsurface, (10, 650))
+
+        textsurface2 = myfont.render('Where do you want to go now?', False, (255, 255, 255))
+        screen.blit(textsurface2, (10, 675))
+
+
+
+        textsurface4 = myfont.render('<< WEST', False, (255, 255, 255))
+        screen.blit(textsurface4, (10, SCREEN_HEIGHT-60))
+
+        pygame.display.update()
+        #pygame.time.delay(11000)
+        #self.state='plansza_2_2'
+        west=0
+        while west==0:
+            for event in pygame.event.get():
+                if event.type==pygame.QUIT:#Krzyżyk okna wyłącza grę
+                    pygame.quit()
+                if event.type==pygame.MOUSEBUTTONDOWN: #Dwie następne linijki sprawdzają, czy mysz jest na przycisku
+                    if pygame.mouse.get_pos()[0]<=(300) and pygame.mouse.get_pos()[1]>=(SCREEN_HEIGHT-60):
+                        west=1
+                        self.state='plansza_1_1'
     def plansza_1_1(self):
         screen.blit(plansza1, (0,0))
         pygame.display.flip()
@@ -136,7 +234,7 @@ class GameState():
         pygame.display.flip()
         pygame.event.pump()
         pygame.time.delay(1000)
-        
+
         if user_text == 'candle' or user_text == 'a candle':
             textsurface6 = myfont.render('"Correct! As reward, as promised, you get a hint."', True, (255, 255, 255))
             screen.blit(textsurface6, (10, 700))
@@ -202,14 +300,14 @@ class GameState():
             pygame.display.flip()
             pygame.time.delay(3000)
             #self.state = 'plansza_2_again'
-            
+
         elif user_text == 'south' or user_text == 'the south':
             textsurface3 = riddlefont.render("You decided to move towards the South", False, (255, 255, 255))
             screen.blit(textsurface3, (100, 350))
             pygame.display.flip()
             pygame.time.delay(3000)
             #self.state = 'plansza_4_1'
-            
+
         pygame.display.flip()
 
     def plansza_5_1(self):
@@ -382,6 +480,10 @@ class GameState():
             self.plansza_awaria()
         elif self.state=='plansza_2':
             self.plansza_2()
+        elif self.state=='plansza_2_2':
+            self.plansza_2_2()
+        elif self.state=='plansza_2_3':
+            self.plansza_2_3()
         elif self.state == 'plansza_1_1':
             self.plansza_1_1()
         elif self.state == 'plansza_1_2':
@@ -408,27 +510,37 @@ screen=pygame.display.set_mode((1400,900))
 pygame.display.set_caption("Lost in space")#Tu wpisać nazwę gry
 icon=pygame.image.load('project.png')#nazwa pliku ikonki png, najlepiej z przezroczystym tłem. Jeżeli jest w innym folderze, dodać ścieżkę
 pygame.display.set_icon(icon)
-    #Tło ekranu startowego
-background=pygame.image.load('tlo.png')
+
 
 #Intro menu
 user_text = ''
+#Tło ekranu startowego
+background=pygame.image.load('tlo.png')
+background_resized=pygame.transform.scale(background, (SCREEN_WIDTH,SCREEN_HEIGHT))
+
+#Intro menu
+emergency_txt=pygame.image.load('emergency.png')
 red_button=pygame.image.load("rec.png")
 background_menu=pygame.image.load('tlo_menu.jpg')
+background_menu_resized=pygame.transform.scale(background_menu, (SCREEN_WIDTH,SCREEN_HEIGHT))
 statek=pygame.image.load('ship.png')
 statek_rotated=pygame.transform.rotate(statek,-90)
 danger=pygame.image.load('caution.png')
 #plansza 2
 background_plansza2=pygame.image.load('plansza2.jpg')
-background_plansza2_resize = pygame.transform.scale(background_plansza2, (800,600))
+background_plansza2_resize = pygame.transform.scale(background_plansza2, (SCREEN_WIDTH,SCREEN_HEIGHT))
+kartka=pygame.image.load('kartka.png')
+kartka_resize=pygame.transform.scale(kartka, (574,800))
+cross=pygame.image.load('X.png')
 #plansza 1- zagadka, hint 4
 plansza1 = pygame.image.load('tlo1.jpg')
 #MAIN GAME LOOP
 running=True
 while running:
+
     game_state.state_menager()
     clock.tick(60)
-    for event in pygame.event.get(): #zamiast wstawiania do każdej planszy osobno powinno zadziałać tutaj 
+    for event in pygame.event.get(): #zamiast wstawiania do każdej planszy osobno powinno zadziałać tutaj
         if event.type==pygame.QUIT:
             pygame.quit()
         if event.type == pygame.KEYDOWN: #daje możliwośc pisania w odpowienich polach użytkownikowi ale trzaba wcisnąć enter żeby tekst sie wyzerował na następny input
