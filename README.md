@@ -6,7 +6,7 @@ Twoja rakieta rozbiła się na nieznanej planecie, a Ty musisz odnaleźć drogę
 
 Czy rozwiążesz wszystkie zagadki, aby naprawić rakietę? 
 Czy przypomnisz sobie kim naprawdę jesteś? 
-Jesteś gotowy sprostać nienzajomemu kosmicie aby dostać się do celu?
+Jesteś gotowy sprostać nienzajomemu kosmicie, aby dostać się do celu?
 
 
 Wejdź do kosmicznego świata pełnego niebezpieczeństw, magii i zagadek!
