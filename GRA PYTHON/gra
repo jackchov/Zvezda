@@ -1,11 +1,72 @@
 import pygame
+from player import Player
+
+
 
 class GameState():
 
 
     def __init__(self):
-        self.state='intro_menu'
+        self.state='plansza_2_2'
+        #self.state='intro_menu'
+        self.player=Player()
 
+
+    ''' Tutaj są metody do sprawdzania czy gracz był na danej planszy,
+    zmieńcie nazwy self.state na własne, bo różnie się nazywają, a to szablon'''
+
+    def check_plansza1(self):
+        if self.player.plansza1==False:
+            self.state='plansza_1_1'
+        else:
+            self.state='plansza_1_again'
+
+    def check_plansza2(self):
+        if self.player.plansza2==False:
+            self.state='plansza_2'
+        else:
+            self.state='plansza_2_again'
+
+    def check_plansza3(self):
+        if self.player.plansza3==False:
+            self.state='plansza_3'
+        else:
+            self.state='plansza_3_again'
+
+    def check_plansza4(self):
+        if self.player.plansza4==False:
+            self.state='plansza_4'
+        else:
+            self.state='plansza_4_again'
+
+    def check_plansza5(self):
+        if self.player.plansza5==False:
+            self.state='plansza_5_1'
+        else:
+            self.state='plansza_5_again'
+    def check_plansza6(self):
+        if self.player.plansza6==False:
+            self.state='plansza_6'
+        else:
+            self.state='plansza_6_again'
+    def check_plansza7(self):
+        if self.player.plansza7==False:
+            self.state='plansza_7'
+        else:
+            self.state='plansza_7_again'
+    def check_plansza8(self):
+        if self.player.plansza8==False:
+            self.state='plansza_8'
+        else:
+            self.state='plansza_8_again'
+    def check_plansza9(self):
+        if self.player.plansza9==False:
+            self.state='plansza_9'
+        else:
+            self.state='plansza_9_again'
+
+
+    ''' Plansze początkowe - kokpit, animacja spadania statku'''
 
     def intro_menu(self):
         #print(pygame.mouse.get_pos()) #Wyświetlanie aktualnej pozycji myszy do testów
@@ -57,6 +118,7 @@ class GameState():
             if imageX==1400:
                self.state='plansza_2'
 
+    ''' PLANSZA 2 '''
 
     def plansza_2(self):
         for event in pygame.event.get():
@@ -109,8 +171,8 @@ class GameState():
                         self.state='plansza_2_2'
     def plansza_2_2(self):
         screen.blit(background_plansza2_resize,(0,0))
-        screen.blit(kartka_resize,(SCREEN_WIDTH/2-287,SCREEN_HEIGHT/2-400))
-        screen.blit(cross,(SCREEN_WIDTH/2+287-110,SCREEN_HEIGHT/2-400+10))
+        screen.blit(kartka_resize,(0,0))
+        screen.blit(cross,(SCREEN_WIDTH/2+287-110,SCREEN_HEIGHT/2-400+40))
         pygame.display.update()
         cancel=0
         while cancel==0:
@@ -119,10 +181,11 @@ class GameState():
                     pygame.quit()
                 if event.type==pygame.MOUSEBUTTONDOWN: #Dwie następne linijki sprawdzają, czy mysz jest na przycisku
                     if pygame.mouse.get_pos()[0]>=(SCREEN_WIDTH/2+287-110) and pygame.mouse.get_pos()[0]<=(SCREEN_WIDTH/2+287-110+81):
-                        if pygame.mouse.get_pos()[1]>=(SCREEN_HEIGHT/2-400+10) and pygame.mouse.get_pos()[1]<=(SCREEN_HEIGHT/2-400+10+122):
+                        if pygame.mouse.get_pos()[1]>=(SCREEN_HEIGHT/2-400+40) and pygame.mouse.get_pos()[1]<=(SCREEN_HEIGHT/2-400+40+122):
                             cancel=1
                             self.state='plansza_2_3'
     def plansza_2_3(self):
+        self.player.kartka1=True
         screen.blit(background_plansza2_resize,(0,0))
         pygame.display.update()
         pygame.display.update()
@@ -145,10 +208,17 @@ class GameState():
         textsurface2 = myfont.render('Where do you want to go now?', False, (255, 255, 255))
         screen.blit(textsurface2, (10, 675))
 
-
+        textsurface3 = myfont.render('EAST>>', False, (255, 255, 255))
+        screen.blit(textsurface3, (SCREEN_WIDTH-120, SCREEN_HEIGHT-60))
 
         textsurface4 = myfont.render('<< WEST', False, (255, 255, 255))
         screen.blit(textsurface4, (10, SCREEN_HEIGHT-60))
+
+        textsurface5 = myfont.render('SOUTH', False, (255, 255, 255))
+        screen.blit(textsurface5, (SCREEN_WIDTH/2-30, SCREEN_HEIGHT-60))
+
+        textsurface6 = myfont.render('V', False, (255, 255, 255))
+        screen.blit(textsurface6, (SCREEN_WIDTH/2, SCREEN_HEIGHT-30))
 
         pygame.display.update()
         #pygame.time.delay(11000)
@@ -159,10 +229,70 @@ class GameState():
                 if event.type==pygame.QUIT:#Krzyżyk okna wyłącza grę
                     pygame.quit()
                 if event.type==pygame.MOUSEBUTTONDOWN: #Dwie następne linijki sprawdzają, czy mysz jest na przycisku
+                    if pygame.mouse.get_pos()[0]>=(SCREEN_WIDTH/2-120) and pygame.mouse.get_pos()[1]>=(SCREEN_HEIGHT-60):
+                        next=1
+                        self.check_plansza3()
                     if pygame.mouse.get_pos()[0]<=(300) and pygame.mouse.get_pos()[1]>=(SCREEN_HEIGHT-60):
-                        west=1
-                        self.state='plansza_1_1'
+                        next=1
+                        self.check_plansza1()
+                    if pygame.mouse.get_pos()[0]<=(SCREEN_WIDTH/2-30) and pygame.mouse.get_pos()[0]<=(SCREEN_WIDTH/2+30) and pygame.mouse.get_pos()[1]>=(SCREEN_HEIGHT-60):
+                        next=1
+                        self.check_plansza4()
+    def plansza_2_again(self):
+        screen.blit(background_plansza2_resize,(0,0))
+        pygame.display.update()
+        pygame.event.pump()
+        pygame.time.delay(800)
+        surf = pygame.Surface((1400, 150))
+        surf.fill((0, 0, 0))
+        rect= surf.get_rect()
+        screen.blit(surf, (SCREEN_WIDTH / 2-700, SCREEN_HEIGHT-150))
+        myfont = pygame.font.SysFont('Times New Roman', 22)
+        pygame.display.flip()
+        pygame.event.pump()
+        pygame.time.delay(500)
+
+
+            #zawijanie tekstu okazało się bardziej skomplikowane, na razie wypisuje każda linjke osobno
+        textsurface = myfont.render('"My ship is broken. I need to find every piece of my diary and come back here."', False, (255, 255, 255))
+        screen.blit(textsurface, (10, 750))
+
+        textsurface2 = myfont.render('Only then I will be able to go home', False, (255, 255, 255))
+        screen.blit(textsurface2, (10, 775))
+
+        textsurface3 = myfont.render('EAST>>', False, (255, 255, 255))
+        screen.blit(textsurface3, (SCREEN_WIDTH-120, SCREEN_HEIGHT-60))
+
+        textsurface4 = myfont.render('<< WEST', False, (255, 255, 255))
+        screen.blit(textsurface4, (10, SCREEN_HEIGHT-60))
+
+        textsurface5 = myfont.render('SOUTH', False, (255, 255, 255))
+        screen.blit(textsurface5, (SCREEN_WIDTH/2-30, SCREEN_HEIGHT-60))
+
+        textsurface6 = myfont.render('V', False, (255, 255, 255))
+        screen.blit(textsurface6, (SCREEN_WIDTH/2, SCREEN_HEIGHT-30))
+        pygame.display.update()
+        #pygame.time.delay(11000)
+        #self.state='plansza_2_2'
+        next=0
+        while next==0:
+            for event in pygame.event.get():
+                if event.type==pygame.QUIT:#Krzyżyk okna wyłącza grę
+                    pygame.quit()
+                if event.type==pygame.MOUSEBUTTONDOWN: #Dwie następne linijki sprawdzają, czy mysz jest na przycisku
+                    if pygame.mouse.get_pos()[0]>=(SCREEN_WIDTH/2-120) and pygame.mouse.get_pos()[1]>=(SCREEN_HEIGHT-60):
+                        next=1
+                        self.check_plansza3()
+                    if pygame.mouse.get_pos()[0]<=(300) and pygame.mouse.get_pos()[1]>=(SCREEN_HEIGHT-60):
+                        next=1
+                        self.check_plansza1()
+                    if pygame.mouse.get_pos()[0]<=(SCREEN_WIDTH/2-30) and pygame.mouse.get_pos()[0]<=(SCREEN_WIDTH/2+30) and pygame.mouse.get_pos()[1]>=(SCREEN_HEIGHT-60):
+                        next=1
+                        self.check_plansza4()
+    ''' PLANSZA 1 '''
+
     def plansza_1_1(self):
+        self.player.plansza1=True
         screen.blit(plansza1, (0,0))
         pygame.display.flip()
         pygame.event.pump()
@@ -294,21 +424,31 @@ class GameState():
         textsurface2 = riddlefont.render(user_text, True, (255, 255, 255))
         screen.blit(textsurface2, (100, 300))
 
+
+
         if user_text == 'east' or user_text == 'the east':
             textsurface3 = riddlefont.render("You decided to move towards the East", False, (255, 255, 255))
             screen.blit(textsurface3, (100, 350))
             pygame.display.flip()
             pygame.time.delay(3000)
-            #self.state = 'plansza_2_again'
+            self.check_plansza2()
 
         elif user_text == 'south' or user_text == 'the south':
             textsurface3 = riddlefont.render("You decided to move towards the South", False, (255, 255, 255))
             screen.blit(textsurface3, (100, 350))
             pygame.display.flip()
             pygame.time.delay(3000)
-            #self.state = 'plansza_4_1'
+            self.check_plansza4()
 
         pygame.display.flip()
+
+    ''' PLANSZA 3 '''
+
+
+    ''' PLANSZA 4 '''
+
+    ''' PLANSZA 5 '''
+
 
     def plansza_5_1(self):
         screen.blit(plansza1, (0,0)) # zmienić obrazek na ten od Julii
@@ -426,29 +566,28 @@ class GameState():
                     screen.blit(textsurface3, (100, 350))
                     pygame.display.flip()
                     pygame.time.delay(3000)
-                    #self.state = 'plansza_6_1'
+                    #self.check_plansza6()
 
                 elif user_text == 'south' or user_text == 'the south':
                     textsurface3 = riddlefont.render("You decided to move towards the South", False, (255, 255, 255))
                     screen.blit(textsurface3, (100, 350))
                     pygame.display.flip()
                     pygame.time.delay(3000)
-                    #self.state = 'plansza_8_1'
+                    #self.check_plansza8()
 
                 elif user_text == 'north' or user_text == 'the north':
                     textsurface3 = riddlefont.render("You decided to move towards the North", False, (255, 255, 255))
                     screen.blit(textsurface3, (100, 350))
                     pygame.display.flip()
                     pygame.time.delay(3000)
-                    #self.state = 'plansza_2_again'
+                    #self.check_plansza2()
 
                 elif user_text == 'west' or user_text == 'the west':
                     textsurface3 = riddlefont.render("You decided to move towards the West", False, (255, 255, 255))
                     screen.blit(textsurface3, (100, 350))
                     pygame.display.flip()
                     pygame.time.delay(3000)
-                    #self.state = 'plansza_4_1' or 'plansza_4_again' #dodać sprawdzenie czy użytkownik już tam nie był
-
+                    #self.check_plansza4()
     def plansza_5_again(self): #plansza 1 gdzie nic sie nie dzieje, uruchamiana gdy gracz ponownie wejdzie na pole 1
         screen.blit(plansza1, (0,0)) # zmień obraz na to co potem w 5
         pygame.display.flip()
@@ -472,7 +611,16 @@ class GameState():
         pygame.time.delay(4000)
         self.state = 'move_from5'
 
+    ''' PLANSZA 6 '''
 
+    ''' PLANSZA 7 '''
+
+    ''' PLANSZA 8 '''
+
+
+    ''' PLANSZA 9 '''
+
+    ''' STATE MENAGER '''
     def state_menager(self):
         if self.state=='intro_menu':
             self.intro_menu()
@@ -484,10 +632,14 @@ class GameState():
             self.plansza_2_2()
         elif self.state=='plansza_2_3':
             self.plansza_2_3()
+        elif self.state=='plansza_2_again':
+            self.plansza_2_again()
         elif self.state == 'plansza_1_1':
             self.plansza_1_1()
         elif self.state == 'plansza_1_2':
             self.plansza_1_2()
+        elif self.state == 'plansza_1_again':
+            self.plansza_1_again()
         elif self.state == 'move_from1':
             self.move_from1()
         elif self.state == 'plansza_5_1':
@@ -527,10 +679,10 @@ statek=pygame.image.load('ship.png')
 statek_rotated=pygame.transform.rotate(statek,-90)
 danger=pygame.image.load('caution.png')
 #plansza 2
-background_plansza2=pygame.image.load('plansza2.jpg')
+background_plansza2=pygame.image.load('rakieta.PNG')
 background_plansza2_resize = pygame.transform.scale(background_plansza2, (SCREEN_WIDTH,SCREEN_HEIGHT))
-kartka=pygame.image.load('kartka.png')
-kartka_resize=pygame.transform.scale(kartka, (574,800))
+kartka=pygame.image.load('kartka_z_pamietnika_pierwsza.png')
+kartka_resize = pygame.transform.scale(kartka,(SCREEN_WIDTH,SCREEN_HEIGHT))
 cross=pygame.image.load('X.png')
 #plansza 1- zagadka, hint 4
 plansza1 = pygame.image.load('tlo1.jpg')
