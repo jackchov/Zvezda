@@ -1314,7 +1314,7 @@ class GameState():
                             cancel=1
                             self.state='plansza_7_1'
     def plansza_7_1(self):
-        self.player.lina=True #DO TESTÓW
+        #self.player.lina=True #DO TESTÓW
 
         screen.blit(tlo_z_mostem_resize, (0,0))
         pygame.display.flip()
