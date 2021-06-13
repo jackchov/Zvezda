@@ -293,7 +293,7 @@ class GameState():
 
     def plansza_1_1(self):
         self.player.plansza1=True
-        screen.blit(plansza1, (0,0))
+        screen.blit(plansza_zwykla_resize, (0,0))
         pygame.display.flip()
         pygame.event.pump()
         pygame.time.delay(800)
@@ -334,7 +334,7 @@ class GameState():
 
 
     def plansza_1_2(self):
-        screen.blit(plansza1, (0,0))
+        screen.blit(plansza_zwykla_resize, (0,0))
         surf = pygame.Surface((1400, 250))
         surf.fill((0, 0, 0))
         rect= surf.get_rect()
@@ -368,7 +368,7 @@ class GameState():
         if user_text == 'candle' or user_text == 'a candle':
             textsurface6 = myfont.render('"Correct! As reward, as promised, you get a hint."', True, (255, 255, 255))
             screen.blit(textsurface6, (10, 700))
-            textsurface7 = myfont.render('"When facing a danger from the South keep in mind that [INCLUDE HINT TO PLACE NR 4]"', True, (255, 255, 255))
+            textsurface7 = myfont.render('"South from here something new awaits. You should not expect kindness. Stealth is your best bet', True, (255, 255, 255))
             screen.blit(textsurface7, (10, 725))
             textsurface8 = myfont.render('"Now go, adventurer..."', True, (255, 255, 255))
             screen.blit(textsurface7, (10, 725))
@@ -389,7 +389,7 @@ class GameState():
         pygame.display.flip()
 
     def plansza_1_again(self): #plansza 1 gdzie nic sie nie dzieje, uruchamiana gdy gracz ponownie wejdzie na pole 1
-        screen.blit(plansza1, (0,0))
+        screen.blit(plansza_zwykla_resize, (0,0))
         pygame.display.flip()
         pygame.event.pump()
         pygame.time.delay(800)
@@ -446,12 +446,199 @@ class GameState():
 
 
     ''' PLANSZA 4 '''
+    
+    def plansza_4(self):
+        screen.blit(plansza_kosmita_resize, (0,0))
+
+        surf = pygame.Surface((1400, 250))
+        surf.fill((0, 0, 0))
+        rect= surf.get_rect()
+        screen.blit(surf, (SCREEN_WIDTH / 2-700, SCREEN_HEIGHT-250))
+        myfont = pygame.font.SysFont('Times New Roman', 22)
+        myfont1 = pygame.font.SysFont('Times New Roman', 16)
+
+        textsurface = myfont.render('Now you realize you are in some serious trouble. You freeze completly trying to find the best way out of the situation.', False, (255, 255, 255))
+        screen.blit(textsurface, (10, 650))
+
+        textsurface2 = myfont.render('The situation being a weird intimidating alien right in front of you. Of course, with your luck, you would not crash on a planet with nice looking aliens.', False, (255, 255, 255))
+        screen.blit(textsurface2, (10, 675))
+
+        textsurface2 = myfont.render('You feel like you have only two options.', False, (255, 255, 255))
+        screen.blit(textsurface2, (10, 700))
+
+        textsurface3 = myfont.render('You could hide behind a boulder- you are not sure if it is big enough to be a good hiding spot or...', False, (255, 255, 255))
+        screen.blit(textsurface3, (10, 725))
+
+        textsurface3 = myfont.render('You could say hi to the alien and hopefully make a new exotic fun frienship.', False, (255, 255, 255))
+        screen.blit(textsurface3, (10, 750))
+
+        textsurface3 = myfont.render('You decide to: (write "hide" or "say hi")', False, (255, 255, 255))
+        screen.blit(textsurface3, (10, 775))
+
+        textsurface0 = myfont.render(user_text, True, (255, 255, 255))
+        screen.blit(textsurface0, (10, 800))
+
+        textsurface6 = myfont1.render('(REMEMBER TO PRESS ENTER AFTER THE ANSWER)', False, (255, 255, 255))
+        screen.blit(textsurface6, (500, 875))
+
+        pygame.display.update()
+        pygame.event.pump()
+        pygame.time.delay(1000)
+
+        if user_text == 'say hi':
+            textsurface7 = myfont.render('You decided to say hi. What could go wrong.', False, (255, 255, 255))
+            screen.blit(textsurface7, (10, 825))
+
+            pygame.display.flip()
+            pygame.time.delay(2000)
+            self.state = 'plansza_4_hi'
+
+        elif user_text == 'hide':
+            textsurface7 = myfont.render('You decided to try and hide.', False, (255, 255, 255))
+            screen.blit(textsurface7, (10, 825))
+
+            pygame.display.flip()
+            pygame.time.delay(2000)
+            self.state = 'plansza_4_hide'
+
+    def plansza_4_hi(self):
+        screen.blit(plansza_kosmita_resize, (0,0))
+
+        pygame.display.flip()
+        pygame.event.pump()
+        pygame.time.delay(800)
+
+        surf = pygame.Surface((1400, 250))
+        surf.fill((0, 0, 0))
+        rect= surf.get_rect()
+        screen.blit(surf, (SCREEN_WIDTH / 2-700, SCREEN_HEIGHT-250))
+        myfont = pygame.font.SysFont('Times New Roman', 22)
+        myfont1 = pygame.font.SysFont('Times New Roman', 16)
+
+        pygame.display.flip()
+        pygame.event.pump()
+        pygame.time.delay(500)
+
+        textsurface = myfont.render('You move towards the alien with an optimistic attitude.', False, (255, 255, 255))
+        screen.blit(textsurface, (10, 650))
+
+        textsurface2 = myfont.render('"Hi" you say "Could I-" ', False, (255, 255, 255))
+        screen.blit(textsurface2, (10, 675))
+
+        textsurface2 = myfont.render('Before you can finish everything goes black', False, (255, 255, 255))
+        screen.blit(textsurface2, (10, 700))
+
+        pygame.display.update()
+        pygame.event.pump()
+        pygame.time.delay(8000)
+
+        self.state = 'game_over'
+
+    def plansza_4_hide(self):
+        screen.blit(plansza_kosmita_resize, (0,0))
+
+        pygame.display.flip()
+        pygame.event.pump()
+        pygame.time.delay(800)
+
+        surf = pygame.Surface((1400, 250))
+        surf.fill((0, 0, 0))
+        rect= surf.get_rect()
+        screen.blit(surf, (SCREEN_WIDTH / 2-700, SCREEN_HEIGHT-250))
+        myfont = pygame.font.SysFont('Times New Roman', 22)
+        myfont1 = pygame.font.SysFont('Times New Roman', 16)
+
+        pygame.display.flip()
+        pygame.event.pump()
+        pygame.time.delay(500)
+
+        textsurface = myfont.render('You moved very slowly towards the boulder hoping the alien will not notice.', False, (255, 255, 255))
+        screen.blit(textsurface, (10, 650))
+
+        textsurface2 = myfont.render('You stayed behind a boulder for a while and when you heard their steps fading you could finally let your breath out', False, (255, 255, 255))
+        screen.blit(textsurface2, (10, 675))
+
+        textsurface2 = myfont.render('You were safe. You decided to continue movig forward', False, (255, 255, 255))
+        screen.blit(textsurface2, (10, 700))
+
+        pygame.display.update()
+        pygame.time.delay(11000)
+
+        self.state = 'move_from4'
+
+
+
+    def plansza_4_again(self):
+        screen.blit(plansza_zwykla_resize, (0,0))
+        pygame.display.flip()
+        pygame.event.pump()
+        pygame.time.delay(800)
+        surf = pygame.Surface((1400, 250))
+        surf.fill((0, 0, 0))
+        rect= surf.get_rect()
+        screen.blit(surf, (SCREEN_WIDTH / 2-700, SCREEN_HEIGHT-250))
+        myfont = pygame.font.SysFont('Times New Roman', 22)
+        pygame.display.flip()
+        pygame.event.pump()
+        pygame.time.delay(500)
+
+        textsurface = myfont.render('This is the place you encountered the alien. Well, technically you are the alien here.', False, (255, 255, 255))
+        screen.blit(textsurface, (10, 650))
+
+        textsurface0 = myfont.render('Nothing is happening. You decide to continue moving', False, (255, 255, 255))
+        screen.blit(textsurface0, (10, 675))
+
+        pygame.display.flip()
+        pygame.event.pump()
+
+        pygame.time.delay(4000)
+        self.state = 'move_from4'
+
+    def move_from4(self):
+        screen.fill((0, 0, 0))
+        riddlefont = pygame.font.SysFont('Times New Roman', 40)
+
+        textsurface = riddlefont.render("It seems you could go north, east or south from here.", False, (255, 255, 255))
+        screen.blit(textsurface, (100, 200))
+
+        textsurface1 = riddlefont.render("You decide to go:", False, (255, 255, 255))
+        screen.blit(textsurface1, (100, 250))
+
+        textsurface2 = riddlefont.render(user_text, True, (255, 255, 255))
+        screen.blit(textsurface2, (100, 300))
+
+
+        if user_text == 'east' or user_text == 'the east':
+            textsurface3 = riddlefont.render("You decided to move towards the East", False, (255, 255, 255))
+            screen.blit(textsurface3, (100, 350))
+            pygame.display.flip()
+            pygame.time.delay(3000)
+            self.check_plansza5()
+
+        elif user_text == 'south' or user_text == 'the south':
+            textsurface3 = riddlefont.render("You decided to move towards the South", False, (255, 255, 255))
+            screen.blit(textsurface3, (100, 350))
+            pygame.display.flip()
+            pygame.time.delay(3000)
+            self.check_plansza7()
+
+        elif user_text == 'north' or user_text == 'the north':
+            textsurface3 = riddlefont.render("You decided to move towards the North", False, (255, 255, 255))
+            screen.blit(textsurface3, (100, 350))
+            pygame.display.flip()
+            pygame.time.delay(3000)
+            self.check_plansza1()
+
+
+        pygame.display.flip()
+
+
 
     ''' PLANSZA 5 '''
 
 
     def plansza_5_1(self):
-        screen.blit(plansza1, (0,0)) # zmienić obrazek na ten od Julii
+        screen.blit(plansza_zwykla_resize, (0,0))
         pygame.display.flip()
         pygame.event.pump()
         pygame.time.delay(800)
@@ -484,7 +671,7 @@ class GameState():
         self.state = 'plansza_5_2'
 
     def plansza_5_2(self):
-        screen.blit(plansza1, (0,0)) #zmienić grafikę na taka jaka co w 5_1
+        screen.blit(plansza_zwykla_resize, (0,0))
         surf = pygame.Surface((1400, 250))
         surf.fill((0, 0, 0))
         rect= surf.get_rect()
@@ -589,7 +776,7 @@ class GameState():
                     pygame.time.delay(3000)
                     #self.check_plansza4()
     def plansza_5_again(self): #plansza 1 gdzie nic sie nie dzieje, uruchamiana gdy gracz ponownie wejdzie na pole 1
-        screen.blit(plansza1, (0,0)) # zmień obraz na to co potem w 5
+        screen.blit(plansza_zwykla_resize, (0,0))
         pygame.display.flip()
         pygame.event.pump()
         pygame.time.delay(800)
@@ -620,6 +807,22 @@ class GameState():
 
     ''' PLANSZA 9 '''
 
+
+    ''' PLANSZA GAME OVER'''
+
+    def game_over(self):
+        screen.fill((0, 0, 0))
+        riddlefont = pygame.font.SysFont('Times New Roman', 80)
+
+        textsurface = riddlefont.render("GAME OVER", False, (255, 255, 255))
+        screen.blit(textsurface, (450, 400))
+
+        pygame.display.update()
+        pygame.event.pump()
+        pygame.time.delay(4000)
+
+        pygame.quit()
+
     ''' STATE MENAGER '''
     def state_menager(self):
         if self.state=='intro_menu':
@@ -648,7 +851,19 @@ class GameState():
             self.plansza_5_2()
         elif self.state == 'move_from5':
             self.move_from5()
-
+        elif self.state == 'plansza_4':
+            self.plansza_4()
+        elif self.state =='plansza_4_again':
+            self.plansza_4_again()
+        elif self.state == 'move_from4':
+            self.move_from4()
+        elif self.state == 'plansza_4_hide':
+            self.plansza_4_hide()
+        elif self.state == 'plansza_4_hi':
+            self.plansza_4_hi()
+        elif self.state == 'game_over':
+            self.game_over()
+            
 #inicjalizacja pygame
 pygame.init()
 clock=pygame.time.Clock()
@@ -685,7 +900,12 @@ kartka=pygame.image.load('kartka_z_pamietnika_pierwsza.png')
 kartka_resize = pygame.transform.scale(kartka,(SCREEN_WIDTH,SCREEN_HEIGHT))
 cross=pygame.image.load('X.png')
 #plansza 1- zagadka, hint 4
-plansza1 = pygame.image.load('tlo1.jpg')
+plansza_zwykla = pygame.image.load('tło.png')
+plansza_zwykla_resize = pygame.transform.scale(plansza_zwykla, (SCREEN_WIDTH,SCREEN_HEIGHT))
+#plansza 4 / 9
+plansza_kosmita = pygame.image.load('kosmita.png')
+plansza_kosmita = pygame.transform.scale(plansza_kosmita, (SCREEN_WIDTH,SCREEN_HEIGHT))
+
 #MAIN GAME LOOP
 running=True
 while running:
