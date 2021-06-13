@@ -7,13 +7,11 @@ class GameState():
 
 
     def __init__(self):
-        #self.state='congratulations' #TESTY
+        #self.state='gra_most' #TESTY
         self.state='intro_menu' #REAL GAME
         self.player=Player()
 
-
-    ''' Tutaj są metody do sprawdzania czy gracz był na danej planszy,
-    zmieńcie nazwy self.state na własne, bo różnie się nazywają, a to szablon'''
+    ''' Tutaj są metody do sprawdzania czy gracz był na danej planszy,'''
 
     def check_plansza1(self):
         if self.player.plansza1==False:
@@ -33,9 +31,9 @@ class GameState():
 
     def check_plansza3(self):
         if self.player.plansza3==False:
-            self.state='plansza_3'
+            self.state='plansza_3_1'
         else:
-            self.state='plansza_3_again'
+            self.state='plansza_3_1'
 
     def check_plansza4(self):
         if self.player.plansza4==False:
@@ -68,7 +66,7 @@ class GameState():
         if self.player.plansza9==False:
             self.state='plansza_9'
         else:
-            self.state='plansza_9_again'
+            self.state='plansza_9'
 
 
     ''' Plansze początkowe - kokpit, animacja spadania statku'''
@@ -209,10 +207,10 @@ class GameState():
         textsurface2 = myfont.render('Where do you want to go now?', False, (255, 255, 255))
         screen.blit(textsurface2, (10, 675))
 
-        textsurface3 = myfont.render('SOUTH >>', False, (255, 255, 255))
+        textsurface3 = myfont.render('SOUTH', False, (255, 255, 255))
         screen.blit(textsurface3, (SCREEN_WIDTH-120, SCREEN_HEIGHT-60))
 
-        textsurface4 = myfont.render('<< WEST', False, (255, 255, 255))
+        textsurface4 = myfont.render('WEST', False, (255, 255, 255))
         screen.blit(textsurface4, (10, SCREEN_HEIGHT-60))
         pygame.display.update()
 
@@ -227,7 +225,7 @@ class GameState():
                         self.check_plansza1()
                     if pygame.mouse.get_pos()[0]>=(SCREEN_WIDTH-300) and pygame.mouse.get_pos()[1]>=(SCREEN_HEIGHT-60):
                         next=1
-                        self.check_plansza4()
+                        self.check_plansza5()
 
     def plansza_2_again(self):
         screen.blit(background_plansza2_resize,(0,0))
@@ -249,7 +247,7 @@ class GameState():
         textsurface2 = myfont.render('Only then I will be able to go home', False, (255, 255, 255))
         screen.blit(textsurface2, (10, 775))
 
-        textsurface3 = myfont.render('SOUTH >>', False, (255, 255, 255))
+        textsurface3 = myfont.render('SOUTH ', False, (255, 255, 255))
         screen.blit(textsurface3, (SCREEN_WIDTH-120, SCREEN_HEIGHT-60))
 
         textsurface4 = myfont.render('<< WEST', False, (255, 255, 255))
@@ -267,12 +265,83 @@ class GameState():
                         self.check_plansza1()
                     if pygame.mouse.get_pos()[0]>=(SCREEN_WIDTH-300) and pygame.mouse.get_pos()[1]>=(SCREEN_HEIGHT-60):
                         next=1
-                        self.check_plansza4()
-    #def plansza_finish(self):
+                        self.check_plansza5()
+    def plansza_finish(self):
+        screen.blit(background_plansza2_resize,(0,0))
+        pygame.display.update()
+        pygame.display.update()
+        pygame.event.pump()
+        pygame.time.delay(800)
+        surf = pygame.Surface((1400, 250))
+        surf.fill((0, 0, 0))
+        rect= surf.get_rect()
+        screen.blit(surf, (SCREEN_WIDTH / 2-700, SCREEN_HEIGHT-250))
+        myfont = pygame.font.SysFont('Times New Roman', 22)
+        myfont2=pygame.font.SysFont('Times New Roman', 28)
+        pygame.display.flip()
+        pygame.event.pump()
+        pygame.time.delay(500)
+
+        textsurface = myfont.render('"I found all the pages from the diary."', False, (255, 255, 255))
+        screen.blit(textsurface, (10, 650))
+
+        textsurface2 = myfont.render('"Now I will be able to restore my memory and repair the ship."', False, (255, 255, 255))
+        screen.blit(textsurface2, (10, 675))
+
+        textsurface3 = myfont.render('CAST A SPELL', False, (255, 255, 255))
+        screen.blit(textsurface3, (SCREEN_WIDTH/2-100, SCREEN_HEIGHT-60))
+
+        pygame.display.update()
+        next=0
+        while next==0:
+            for event in pygame.event.get():
+                if event.type==pygame.QUIT:#Krzyżyk okna wyłącza grę
+                    pygame.quit()
+                if event.type==pygame.MOUSEBUTTONDOWN: #Dwie następne linijki sprawdzają, czy mysz jest na przycisku
+                    if pygame.mouse.get_pos()[0]>=(SCREEN_WIDTH/2-100)and pygame.mouse.get_pos()[0]<=(SCREEN_WIDTH/2+100) and pygame.mouse.get_pos()[1]>=(SCREEN_HEIGHT-60):
+                        next=1
+
+                        self.state='plansza_kokpit_finish'
+
+
+
+    def plansza_kokpit_finish(self):
+        screen.blit(background_menu_resized,(0,0))
+        pygame.display.update()
+        pygame.event.pump()
+        pygame.time.delay(800)
+        surf = pygame.Surface((1400, 150))
+        surf.fill((0, 0, 0))
+        rect= surf.get_rect()
+        screen.blit(surf, (SCREEN_WIDTH / 2-700, SCREEN_HEIGHT-150))
+        myfont = pygame.font.SysFont('Times New Roman', 22)
+        myfont2 = pygame.font.SysFont('Times New Roman', 34)
+        pygame.display.flip()
+        pygame.event.pump()
+        pygame.time.delay(500)
+
+        textsurface = myfont.render('"Finally, I can go back home"', False, (255, 255, 255))
+        screen.blit(textsurface, (10, 750))
+
+        textsurface2 = myfont2.render('PRESS THE RED BUTTON', False, (255, 255, 255))
+        screen.blit(textsurface2, (SCREEN_WIDTH/2-200, 775))
+        pygame.display.update()
+        buttn_click=0
+        while buttn_click==0:
+            for event in pygame.event.get():
+                if event.type==pygame.QUIT:#Krzyżyk okna wyłącza grę
+                    pygame.quit()
+                if event.type==pygame.MOUSEBUTTONDOWN: #Dwie następne linijki sprawdzają, czy mysz jest na przycisku
+                    if pygame.mouse.get_pos()[0]>=(658) and pygame.mouse.get_pos()[0]<=(658+94):
+                        if pygame.mouse.get_pos()[1]>=(550) and pygame.mouse.get_pos()[1]<=(550+65):
+                            buttn_click=1
+                            self.state='plansza_startowanie'
+
+
     def plansza_startowanie(self):
         imageX= 1400; # x coordnate of image
         imageY= 900; # y coordinate of image
-        while imageX<=1400:
+        while imageX!=0:
             for event in pygame.event.get():
                 if event.type==pygame.QUIT:#Krzyżyk okna wyłącza grę
                     pygame.quit()
@@ -439,7 +508,195 @@ class GameState():
         pygame.display.flip()
 
     ''' PLANSZA 3 '''
-#self.player.plansza3=True
+    def plansza_3_1(self):
+        self.player.plansza3=True
+        screen.blit(plansza1, (0, 0))
+
+        surf = pygame.Surface((1400, 250))
+        surf.fill((0, 0, 0))
+        rect = surf.get_rect()
+        screen.blit(surf, (SCREEN_WIDTH / 2 - 700, SCREEN_HEIGHT - 250))
+        myfont = pygame.font.SysFont('Times New Roman', 22)
+
+        textsurface1 = myfont.render('It seems that you can go inside or go back south:', False, (255, 255, 255))
+        screen.blit(textsurface1, (100, 675))
+
+        textsurface1 = myfont.render('You decide to go:', False, (255, 255, 255))
+        screen.blit(textsurface1, (100, 700))
+
+        textsurface2 = myfont.render(user_text, True, (255, 255, 255))
+        screen.blit(textsurface2, (100, 725))
+
+        pygame.display.flip()
+        pygame.event.pump()
+        pygame.time.delay(100)
+
+        if user_text == 'south' or user_text == 'the south':
+            textsurface3 = myfont.render("You decided to move towards the South", False, (255, 255, 255))
+            screen.blit(textsurface3, (100, 675))
+            pygame.display.flip()
+
+            pygame.time.delay(3000)
+            self.state = 'plansza_6_1'
+
+        if user_text == 'inside' or user_text == 'go inside':
+            textsurface3 = myfont.render("You decided to go inside", False, (255, 255, 255))
+            screen.blit(textsurface3, (100, 750))
+            pygame.display.flip()
+            pygame.time.delay(3000)
+            self.state='inside'
+
+    def inside(self):
+        screen.blit(plansza1, (0, 0))
+        surf = pygame.Surface((1400, 250))
+        surf.fill((0, 0, 0))
+        rect = surf.get_rect()
+        screen.blit(surf, (SCREEN_WIDTH / 2 - 700, SCREEN_HEIGHT - 250))
+        myfont = pygame.font.SysFont('Times New Roman', 22)
+
+        textsurface3 = myfont.render("As you enter the cave you see three tunnels.", False, (255, 255, 255))
+        screen.blit(textsurface3, (100, 675))
+
+        textsurface22 = myfont.render("Which tunnel you decide to enter? Left, center or right?", False, (255, 255, 255))
+        screen.blit(textsurface22, (100, 700))
+        textsurface2 = myfont.render(user_text, True, (255, 255, 255))
+        screen.blit(textsurface2, (100, 725))
+
+        pygame.display.flip()
+
+        pygame.time.delay(100)
+
+        if user_text == 'left' or user_text == 'go left':
+            textsurface33 = myfont.render("You go inside the left tunnel but unfortunately it ends with a dead end. You decide to go back", False,
+                                                (255, 255, 255))
+            screen.blit(textsurface33, (100, 750))
+            pygame.display.flip()
+            pygame.time.delay(5000)
+            self.state = 'plansza_3_1'
+        if user_text == 'right' or user_text == 'go right':
+            textsurface18 = myfont.render("You go inside the right tunnel but unfortunately it ends with a dead end. You decide to go back", False,
+                                                (255, 255, 255))
+
+            screen.blit(textsurface18, (100, 750))
+            pygame.display.flip()
+            pygame.time.delay(5000)
+            self.state = 'plansza_3_1'
+        if user_text == 'center':
+            textsurface3 = myfont.render("You decided to go through the center tunnel", False, (255, 255, 255))
+            screen.blit(textsurface3, (100, 750))
+            pygame.display.flip()
+            pygame.time.delay(3000)
+            self.state = 'center'
+    def center(self):
+        screen.blit(plansza1, (0, 0))
+        surf = pygame.Surface((1400, 250))
+        surf.fill((0, 0, 0))
+        rect = surf.get_rect()
+        screen.blit(surf, (SCREEN_WIDTH / 2 - 700, SCREEN_HEIGHT - 250))
+        myfont = pygame.font.SysFont('Times New Roman', 22)
+
+        textsurface9 = myfont.render(
+            "You walk forward for a while, until you reach an underground dome. From here you can either go up or go down",
+            False,
+            (255, 255, 255))
+        screen.blit(textsurface9, (100, 675))
+        textsurface10 = myfont.render(
+            "Go up or go down?",
+            False,
+            (255, 255, 255))
+        screen.blit(textsurface10, (100, 700))
+        textsurface2 = myfont.render(user_text, True, (255, 255, 255))
+        screen.blit(textsurface2, (100, 725))
+        pygame.display.flip()
+        pygame.time.delay(100)
+        if user_text == 'down' or user_text == 'go down':
+            textsurface20 = myfont.render(
+                            'You get yourself really lost in the underground tunnels but luckily you manage to find a way back to the beginning of the cave complex',
+                            False,
+                            (255, 255, 255))
+            screen.blit(textsurface20, (100, 650))
+            pygame.display.flip()
+            pygame.time.delay(5000)
+            self.state = 'plansza_3_1'
+        if user_text == 'up' or user_text == 'go up':
+            textsurface3 = myfont.render("You decided to go up", False, (255, 255, 255))
+            screen.blit(textsurface3, (100, 750))
+            pygame.display.flip()
+            pygame.time.delay(3000)
+            self.state = 'up'
+    def up(self):
+        screen.blit(plansza1, (0, 0))
+        surf = pygame.Surface((1400, 250))
+        surf.fill((0, 0, 0))
+        rect = surf.get_rect()
+        screen.blit(surf, (SCREEN_WIDTH / 2 - 700, SCREEN_HEIGHT - 250))
+        myfont = pygame.font.SysFont('Times New Roman', 22)
+        textsurface7 = myfont.render(
+                            'You climb to the top of the dome on some rocks and boulders, and find a small hole that leads you to a chamber with, '
+                            'another set of tunnels.',
+                            False,
+                            (255, 255, 255))
+        screen.blit(textsurface7, (100, 675))
+        textsurface8 = myfont.render(
+            'One of them is next to dead tree, second tunnel is next to glowing boulder, and last'
+            ' one is next to large skull. ',
+            False,
+            (255, 255, 255))
+        screen.blit(textsurface8, (100, 700))
+        textsurface12 = myfont.render(
+                            'Which tunnel you decide to check? One next to dead tree, glowing boulder or large skull?',
+                            False,
+                            (255, 255, 255))
+        screen.blit(textsurface12, (100, 725))
+        pygame.display.flip()
+
+        textsurface11 = myfont.render(
+                            user_text,
+                            False,
+                            (255, 255, 255))
+        screen.blit(textsurface11, (100, 750))
+        pygame.display.flip()
+        pygame.time.delay(100)
+        if user_text == 'glowing boulder' or user_text == 'large skull':
+
+            textsurface10 = myfont.render(
+                                'After few minutes  of walking around uncanny, same looking rocky corridors you magicaly find yourself at the beggining of the cave',
+                                False,
+                                (255, 255, 255))
+            screen.blit(textsurface10, (100, 775))
+            pygame.display.flip()
+            pygame.time.delay(1000)
+            self.state = 'plansza_3_1'
+        if user_text == 'dead tree':
+            textsurface3 = myfont.render("You decided to go through the tunnel next to dead tree", False, (255, 255, 255))
+            screen.blit(textsurface3, (100,775))
+
+            pygame.display.flip()
+            pygame.time.delay(3000)
+            self.state = 'tree'
+    def tree(self):
+        screen.blit(plansza1, (0, 0))
+        surf = pygame.Surface((1400, 250))
+        surf.fill((0, 0, 0))
+        rect = surf.get_rect()
+        screen.blit(surf, (SCREEN_WIDTH / 2 - 700, SCREEN_HEIGHT - 250))
+        myfont = pygame.font.SysFont('Times New Roman', 22)
+        textsurface26= myfont.render('One step into the tunnel you find yourself falling through the mansized hole'
+                            'you prepare for the worst ',
+                            False, (255, 255, 255))
+        screen.blit(textsurface26, (100, 675))
+        textsurface26 = myfont.render('but luckily you land on piles of bones and clothes'
+                                      'also, you find here another note from your journal!',
+                                      False, (255, 255, 255))
+        screen.blit(textsurface26, (100, 700))
+        textsurface26 = myfont.render(
+                                    'after you read a magic spell written on it you teleport to front of the cave',
+                                      False, (255, 255, 255))
+        screen.blit(textsurface26, (100, 725))
+        pygame.display.update()
+        pygame.time.delay(10000)
+        self.player.kartka3 = True
+        self.state = 'plansza_3_1'
 
     ''' PLANSZA 4 '''
 
@@ -749,28 +1006,28 @@ class GameState():
                     screen.blit(textsurface3, (100, 350))
                     pygame.display.flip()
                     pygame.time.delay(3000)
-                    #self.check_plansza6()
+                    self.check_plansza6()
 
                 elif user_text == 'south' or user_text == 'the south':
                     textsurface3 = riddlefont.render("You decided to move towards the South", False, (255, 255, 255))
                     screen.blit(textsurface3, (100, 350))
                     pygame.display.flip()
                     pygame.time.delay(3000)
-                    #self.check_plansza8()
+                    self.check_plansza8()
 
                 elif user_text == 'north' or user_text == 'the north':
                     textsurface3 = riddlefont.render("You decided to move towards the North", False, (255, 255, 255))
                     screen.blit(textsurface3, (100, 350))
                     pygame.display.flip()
                     pygame.time.delay(3000)
-                    #self.check_plansza2()
+                    self.check_plansza2()
 
                 elif user_text == 'west' or user_text == 'the west':
                     textsurface3 = riddlefont.render("You decided to move towards the West", False, (255, 255, 255))
                     screen.blit(textsurface3, (100, 350))
                     pygame.display.flip()
                     pygame.time.delay(3000)
-                    #self.check_plansza4()
+                    self.check_plansza4()
     def plansza_5_again(self): #plansza 1 gdzie nic sie nie dzieje, uruchamiana gdy gracz ponownie wejdzie na pole 1
         screen.blit(plansza1, (0,0)) # zmień obraz na to co potem w 5
         pygame.display.flip()
@@ -1043,8 +1300,7 @@ class GameState():
                         next=1
                         self.state='plansza_7_kartka'
     def plansza_7_kartka(self):
-        screen.blit(tlo_z_mostem_resize,(0,0))
-        screen.blit(kartka_resize,(0,0)) #WSTAWIĆ KARTKE DO PLANSZY 7
+        screen.blit(kartka_most_resize,(0,0)) #WSTAWIĆ KARTKE DO PLANSZY 7
         screen.blit(cross,(SCREEN_WIDTH/2+287-110,SCREEN_HEIGHT/2-400+40))
         pygame.display.update()
         cancel=0
@@ -1680,6 +1936,85 @@ class GameState():
                             self.check_plansza5()
 
     ''' PLANSZA 9 '''
+    def plansza_9(self):
+        self.player.plansza9 = True
+        screen.blit(plansza_kosmita, (0, 0))
+        pygame.display.flip()
+        pygame.event.pump()
+        pygame.time.delay(800)
+        surf = pygame.Surface((1400, 250))
+        surf.fill((0, 0, 0))
+        rect = surf.get_rect()
+        screen.blit(surf, (SCREEN_WIDTH / 2 - 700, SCREEN_HEIGHT - 250))
+        myfont = pygame.font.SysFont('Times New Roman', 22)
+        pygame.display.flip()
+        pygame.event.pump()
+        pygame.time.delay(500)
+
+        textsurface = myfont.render(
+            'After wandering for long distance you notice an alien standing next to what appears to be page from your notebook',
+            False,
+            (255, 255, 255))
+        screen.blit(textsurface, (10, 650))
+
+        textsurface2 = myfont.render(
+            'How will you recover your knowledge?  You can attack the alien with a stone you or you can aprroach it slowly',
+            False,
+            (255, 255, 255))
+        screen.blit(textsurface2, (10, 675))
+
+        textsurface2 = myfont.render(
+            'Attack or approach slowly? which one it wil be?',
+            False,
+            (255, 255, 255))
+        screen.blit(textsurface2, (10, 700))
+
+        textsurface3 = myfont.render(user_text, True, (255, 255, 255))
+        screen.blit(textsurface3, (10, 725))
+
+        pygame.display.flip()
+        pygame.event.pump()
+        pygame.time.delay(100)
+        pygame.display.update()
+        if user_text == 'attack':
+            textsurface5 = myfont.render('It seems that your attack did little to no damage. Aliens\' turn', False,
+                                         (255, 255, 255))
+            screen.blit(textsurface5, (10, 750))
+            pygame.display.flip()
+            self.state = game_over
+        if user_text == 'approach slowly':
+            textsurface5 = myfont.render('It worked! The alien did not see you coming at all.', False,
+                                         (255, 255, 255))
+            screen.blit(textsurface5, (10, 750))
+            pygame.display.flip()
+            self.player.kartka4 = True
+            self.state = 'plansza_9_1'
+
+    def plansza_9_1(self):
+        screen.blit(plansza_kosmita, (0, 0))
+        pygame.display.flip()
+        pygame.event.pump()
+        pygame.time.delay(800)
+        surf = pygame.Surface((1400, 250))
+        surf.fill((0, 0, 0))
+        rect = surf.get_rect()
+        screen.blit(surf, (SCREEN_WIDTH / 2 - 700, SCREEN_HEIGHT - 250))
+        myfont = pygame.font.SysFont('Times New Roman', 22)
+        pygame.display.flip()
+        pygame.event.pump()
+        pygame.time.delay(500)
+
+        textsurface = myfont.render(
+            'Where to go now? From here you can go north and west',
+            False,
+            (255, 255, 255))
+        screen.blit(textsurface, (10, 650))
+        textsurface3 = myfont.render(user_text, True, (255, 255, 255))
+        screen.blit(textsurface3, (10, 675))
+        if user_text == 'north':
+            self.state = 'plansza6'
+        if user_text == 'south':
+            self.stage = 'plansza8'
 
     ''' PLANSZA GAME OVER'''
 
@@ -1775,10 +2110,26 @@ class GameState():
             self.plansza_8()
         elif self.state=='plansza_finish':
             self.plansza_finish()
+        elif self.state=='plansza_kokpit_finish':
+            self.plansza_kokpit_finish()
         elif self.state=='plansza_startowanie':
             self.plansza_startowanie()
         elif self.state=='congratulations':
             self.congratulations()
+        elif self.state=='plansza_9':
+            self.plansza_9()
+        elif self.state=='plansza_9_1':
+            self.plansza_9_1()
+        elif self.state == 'plansza_3_1':
+            self.plansza_3_1()
+        elif self.state == 'inside':
+            self.inside()
+        elif self.state == 'center':
+            self.center()
+        elif self.state == 'up':
+            self.up()
+        elif self.state =='tree':
+            self.tree()
 
 #inicjalizacja pygame
 pygame.init()
@@ -1798,17 +2149,16 @@ pygame.display.set_icon(icon)
 #Intro menu
 user_text = ''
 #Tło ekranu startowego
-background=pygame.image.load('tlo.png')
+background=pygame.image.load('kosmos.png')
 background_resized=pygame.transform.scale(background, (SCREEN_WIDTH,SCREEN_HEIGHT))
 
 #Intro menu
 emergency_txt=pygame.image.load('emergency.png')
-red_button=pygame.image.load("rec.png")
 background_menu=pygame.image.load('Kokpit.PNG')
 background_menu_resized=pygame.transform.scale(background_menu, (SCREEN_WIDTH,SCREEN_HEIGHT))
 statek=pygame.image.load('ship.png')
-statek_rotated=pygame.transform.rotate(statek,-90)
-statek_rotated2=pygame.transform.rotate(statek,90)
+statek_rotated=pygame.transform.rotate(statek,-90)#STATEK SPADA
+statek_rotated2=pygame.transform.rotate(statek,90)#STATEK LECI
 danger=pygame.image.load('caution.png')
 
 #plansza_6
@@ -1816,6 +2166,8 @@ tlo_zwykle=pygame.image.load('tło.png')
 tlo_zwykle_resize=pygame.transform.scale(tlo_zwykle,(SCREEN_WIDTH,SCREEN_HEIGHT))
 
 #GRA BUDOWANIE MOSTU
+kartka_most=pygame.image.load('kartka_z_pamietnika_most.png')
+kartka_most_resize= pygame.transform.scale(kartka_most,(SCREEN_WIDTH,SCREEN_HEIGHT))
 gra_most_tlo=pygame.image.load('most_tlo.png')
 gra_most_tlo_resized=pygame.transform.scale(gra_most_tlo,(1400,900))
 lina1=pygame.image.load('lina_prosta.png')
