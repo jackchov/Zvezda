@@ -1,14 +1,14 @@
 import pygame
 from player import Player
-
+import random
 
 
 class GameState():
 
 
     def __init__(self):
-        self.state='plansza_2_2'
-        #self.state='intro_menu'
+        #self.state='congratulations' #TESTY
+        self.state='intro_menu' #REAL GAME
         self.player=Player()
 
 
@@ -22,10 +22,14 @@ class GameState():
             self.state='plansza_1_again'
 
     def check_plansza2(self):
-        if self.player.plansza2==False:
-            self.state='plansza_2'
+        if self.player.kartka1==True and self.player.kartka2==True and self.player.kartka3==True and self.player.kartka4==True:
+            self.state='plansza_finish'
+
         else:
-            self.state='plansza_2_again'
+            if self.player.plansza2==False:
+                self.state='plansza_2'
+            else:
+                self.state='plansza_2_again'
 
     def check_plansza3(self):
         if self.player.plansza3==False:
@@ -53,12 +57,13 @@ class GameState():
         if self.player.plansza7==False:
             self.state='plansza_7'
         else:
-            self.state='plansza_7_again'
+            if self.player.most==False:
+                self.state=='plansza_7_again_m2'
+            else:
+                self.state=='plansza_7_again_m1'
     def check_plansza8(self):
-        if self.player.plansza8==False:
-            self.state='plansza_8'
-        else:
-            self.state='plansza_8_again'
+        #Plansza 8 nie potrzebuje check, tam się nic nie dzieje
+        self.state='plansza_8'
     def check_plansza9(self):
         if self.player.plansza9==False:
             self.state='plansza_9'
@@ -77,24 +82,22 @@ class GameState():
                 if event.type==pygame.QUIT:#Krzyżyk okna wyłącza grę
                     pygame.quit()
                 if event.type==pygame.MOUSEBUTTONDOWN: #Dwie następne linijki sprawdzają, czy mysz jest na przycisku
-                    if pygame.mouse.get_pos()[0]>=(SCREEN_WIDTH/2-64) and pygame.mouse.get_pos()[0]<=(SCREEN_WIDTH/2+64):
-                        if pygame.mouse.get_pos()[1]>=(3*SCREEN_HEIGHT/4-64) and pygame.mouse.get_pos()[1]<=(3*SCREEN_HEIGHT/4+64):
+                    if pygame.mouse.get_pos()[0]>=(658) and pygame.mouse.get_pos()[0]<=(658+94):
+                        if pygame.mouse.get_pos()[1]>=(550) and pygame.mouse.get_pos()[1]<=(550+65):
                             buttn_click=1
                             self.state='plansza_awaria'
 
         #screen.fill((0,0,0)) #screen.fill((R,G,B)), kolor tła, późniejsza wersja - dodoać obraz
             if danger_flag==0:
                 screen.blit(background_menu_resized,(0,0))#(nazwa obrazu, pozycja 0,0 - lewy dolny róg)
-                screen.blit(red_button,(SCREEN_WIDTH/2-64,3*SCREEN_HEIGHT/4-64))
                 screen.blit(danger,(SCREEN_WIDTH/2-201,SCREEN_HEIGHT/3-62+30))
-                screen.blit(emergency_txt,(SCREEN_WIDTH/2-327,SCREEN_HEIGHT-100))
+                screen.blit(emergency_txt,(SCREEN_WIDTH/2-327,SCREEN_HEIGHT-80))
                 pygame.display.update()
                 danger_flag=1
                 clock.tick(1)
             else:
                 screen.blit(background_menu_resized,(0,0))#(nazwa obrazu, pozycja 0,0 - lewy dolny róg)
-                screen.blit(red_button,(SCREEN_WIDTH/2-64,3*SCREEN_HEIGHT/4-64))
-                screen.blit(emergency_txt,(SCREEN_WIDTH/2-327,SCREEN_HEIGHT-100))
+                screen.blit(emergency_txt,(SCREEN_WIDTH/2-327,SCREEN_HEIGHT-80))
                 pygame.display.update()
                 danger_flag=0
                 clock.tick(2)
@@ -121,6 +124,7 @@ class GameState():
     ''' PLANSZA 2 '''
 
     def plansza_2(self):
+        self.player.plansza2=True
         for event in pygame.event.get():
             if event.type==pygame.QUIT:#Krzyżyk okna wyłącza grę
                 pygame.quit()
@@ -158,15 +162,14 @@ class GameState():
         screen.blit(textsurface4, (SCREEN_WIDTH-120, SCREEN_HEIGHT-60))
 
         pygame.display.update()
-        #pygame.time.delay(11000)
-        #self.state='plansza_2_2'
+
         next=0
         while next==0:
             for event in pygame.event.get():
                 if event.type==pygame.QUIT:#Krzyżyk okna wyłącza grę
                     pygame.quit()
                 if event.type==pygame.MOUSEBUTTONDOWN: #Dwie następne linijki sprawdzają, czy mysz jest na przycisku
-                    if pygame.mouse.get_pos()[0]>=(SCREEN_WIDTH/2-120) and pygame.mouse.get_pos()[1]>=(SCREEN_HEIGHT-60):
+                    if pygame.mouse.get_pos()[0]>=(SCREEN_WIDTH-120) and pygame.mouse.get_pos()[1]>=(SCREEN_HEIGHT-60):
                         next=1
                         self.state='plansza_2_2'
     def plansza_2_2(self):
@@ -200,44 +203,32 @@ class GameState():
         pygame.event.pump()
         pygame.time.delay(500)
 
-
-            #zawijanie tekstu okazało się bardziej skomplikowane, na razie wypisuje każda linjke osobno
         textsurface = myfont.render('"It seems that I am a wizard. Maybe I can find more pages from the diary."', False, (255, 255, 255))
         screen.blit(textsurface, (10, 650))
 
         textsurface2 = myfont.render('Where do you want to go now?', False, (255, 255, 255))
         screen.blit(textsurface2, (10, 675))
 
-        textsurface3 = myfont.render('EAST>>', False, (255, 255, 255))
+        textsurface3 = myfont.render('SOUTH >>', False, (255, 255, 255))
         screen.blit(textsurface3, (SCREEN_WIDTH-120, SCREEN_HEIGHT-60))
 
         textsurface4 = myfont.render('<< WEST', False, (255, 255, 255))
         screen.blit(textsurface4, (10, SCREEN_HEIGHT-60))
-
-        textsurface5 = myfont.render('SOUTH', False, (255, 255, 255))
-        screen.blit(textsurface5, (SCREEN_WIDTH/2-30, SCREEN_HEIGHT-60))
-
-        textsurface6 = myfont.render('V', False, (255, 255, 255))
-        screen.blit(textsurface6, (SCREEN_WIDTH/2, SCREEN_HEIGHT-30))
-
         pygame.display.update()
-        #pygame.time.delay(11000)
-        #self.state='plansza_2_2'
-        west=0
-        while west==0:
+
+        next=0
+        while next==0:
             for event in pygame.event.get():
                 if event.type==pygame.QUIT:#Krzyżyk okna wyłącza grę
                     pygame.quit()
                 if event.type==pygame.MOUSEBUTTONDOWN: #Dwie następne linijki sprawdzają, czy mysz jest na przycisku
-                    if pygame.mouse.get_pos()[0]>=(SCREEN_WIDTH/2-120) and pygame.mouse.get_pos()[1]>=(SCREEN_HEIGHT-60):
-                        next=1
-                        self.check_plansza3()
                     if pygame.mouse.get_pos()[0]<=(300) and pygame.mouse.get_pos()[1]>=(SCREEN_HEIGHT-60):
                         next=1
                         self.check_plansza1()
-                    if pygame.mouse.get_pos()[0]<=(SCREEN_WIDTH/2-30) and pygame.mouse.get_pos()[0]<=(SCREEN_WIDTH/2+30) and pygame.mouse.get_pos()[1]>=(SCREEN_HEIGHT-60):
+                    if pygame.mouse.get_pos()[0]>=(SCREEN_WIDTH-300) and pygame.mouse.get_pos()[1]>=(SCREEN_HEIGHT-60):
                         next=1
                         self.check_plansza4()
+
     def plansza_2_again(self):
         screen.blit(background_plansza2_resize,(0,0))
         pygame.display.update()
@@ -252,43 +243,48 @@ class GameState():
         pygame.event.pump()
         pygame.time.delay(500)
 
-
-            #zawijanie tekstu okazało się bardziej skomplikowane, na razie wypisuje każda linjke osobno
         textsurface = myfont.render('"My ship is broken. I need to find every piece of my diary and come back here."', False, (255, 255, 255))
         screen.blit(textsurface, (10, 750))
 
         textsurface2 = myfont.render('Only then I will be able to go home', False, (255, 255, 255))
         screen.blit(textsurface2, (10, 775))
 
-        textsurface3 = myfont.render('EAST>>', False, (255, 255, 255))
+        textsurface3 = myfont.render('SOUTH >>', False, (255, 255, 255))
         screen.blit(textsurface3, (SCREEN_WIDTH-120, SCREEN_HEIGHT-60))
 
         textsurface4 = myfont.render('<< WEST', False, (255, 255, 255))
         screen.blit(textsurface4, (10, SCREEN_HEIGHT-60))
-
-        textsurface5 = myfont.render('SOUTH', False, (255, 255, 255))
-        screen.blit(textsurface5, (SCREEN_WIDTH/2-30, SCREEN_HEIGHT-60))
-
-        textsurface6 = myfont.render('V', False, (255, 255, 255))
-        screen.blit(textsurface6, (SCREEN_WIDTH/2, SCREEN_HEIGHT-30))
         pygame.display.update()
-        #pygame.time.delay(11000)
-        #self.state='plansza_2_2'
+
         next=0
         while next==0:
             for event in pygame.event.get():
                 if event.type==pygame.QUIT:#Krzyżyk okna wyłącza grę
                     pygame.quit()
                 if event.type==pygame.MOUSEBUTTONDOWN: #Dwie następne linijki sprawdzają, czy mysz jest na przycisku
-                    if pygame.mouse.get_pos()[0]>=(SCREEN_WIDTH/2-120) and pygame.mouse.get_pos()[1]>=(SCREEN_HEIGHT-60):
-                        next=1
-                        self.check_plansza3()
                     if pygame.mouse.get_pos()[0]<=(300) and pygame.mouse.get_pos()[1]>=(SCREEN_HEIGHT-60):
                         next=1
                         self.check_plansza1()
-                    if pygame.mouse.get_pos()[0]<=(SCREEN_WIDTH/2-30) and pygame.mouse.get_pos()[0]<=(SCREEN_WIDTH/2+30) and pygame.mouse.get_pos()[1]>=(SCREEN_HEIGHT-60):
+                    if pygame.mouse.get_pos()[0]>=(SCREEN_WIDTH-300) and pygame.mouse.get_pos()[1]>=(SCREEN_HEIGHT-60):
                         next=1
                         self.check_plansza4()
+    #def plansza_finish(self):
+    def plansza_startowanie(self):
+        imageX= 1400; # x coordnate of image
+        imageY= 900; # y coordinate of image
+        while imageX<=1400:
+            for event in pygame.event.get():
+                if event.type==pygame.QUIT:#Krzyżyk okna wyłącza grę
+                    pygame.quit()
+            imageX =imageX - 10;
+            imageY= imageY - 6.4;
+            screen.blit(background_resized,(0,0))#(nazwa obrazu, pozycja 0,0 - lewy dolny róg)
+            screen.blit(statek_rotated2,(imageX,imageY)) # paint to screen
+            pygame.display.update()
+            clock.tick(20)
+            if imageX==0:
+               self.state='congratulations'
+
     ''' PLANSZA 1 '''
 
     def plansza_1_1(self):
@@ -334,7 +330,7 @@ class GameState():
 
 
     def plansza_1_2(self):
-        screen.blit(plansza_zwykla_resize, (0,0))
+        screen.blit(plansza1, (0,0))
         surf = pygame.Surface((1400, 250))
         surf.fill((0, 0, 0))
         rect= surf.get_rect()
@@ -443,11 +439,12 @@ class GameState():
         pygame.display.flip()
 
     ''' PLANSZA 3 '''
-
+#self.player.plansza3=True
 
     ''' PLANSZA 4 '''
-    
+
     def plansza_4(self):
+        self.player.plansza4=True
         screen.blit(plansza_kosmita_resize, (0,0))
 
         surf = pygame.Surface((1400, 250))
@@ -632,12 +629,11 @@ class GameState():
 
         pygame.display.flip()
 
-
-
     ''' PLANSZA 5 '''
 
 
     def plansza_5_1(self):
+        self.player.plansza5=True
         screen.blit(plansza_zwykla_resize, (0,0))
         pygame.display.flip()
         pygame.event.pump()
@@ -776,7 +772,7 @@ class GameState():
                     pygame.time.delay(3000)
                     #self.check_plansza4()
     def plansza_5_again(self): #plansza 1 gdzie nic sie nie dzieje, uruchamiana gdy gracz ponownie wejdzie na pole 1
-        screen.blit(plansza_zwykla_resize, (0,0))
+        screen.blit(plansza1, (0,0)) # zmień obraz na to co potem w 5
         pygame.display.flip()
         pygame.event.pump()
         pygame.time.delay(800)
@@ -793,17 +789,16 @@ class GameState():
         screen.blit(textsurface, (10, 650))
 
         textsurface0 = myfont.render('Nothing is happening. You decide to continue moving', False, (255, 255, 255))
-        screen.blit(textsurface0, (10, 625))
+        screen.blit(textsurface0, (10, 675))
 
         pygame.time.delay(4000)
         self.state = 'move_from5'
 
     ''' PLANSZA 6 '''
-    
     def plansza_6(self):
         self.player.plansza6=True
-        screen.blit(tlo_zwykle_resize, (0,0)) 
-        pygame.display.flip(
+        screen.blit(tlo_zwykle_resize, (0,0)) # zmień obraz na to co potem w 5
+        pygame.display.flip()
         pygame.event.pump()
         pygame.time.delay(800)
         surf = pygame.Surface((1400, 250))
@@ -842,7 +837,7 @@ class GameState():
                     if event.type==pygame.QUIT:#Krzyżyk okna wyłącza grę
                         pygame.quit()
                     if event.type==pygame.MOUSEBUTTONDOWN: #Dwie następne linijki sprawdzają, czy mysz jest na przycisku
-                        if pygame.mouse.get_pos()[0]>=(SCREEN_WIDTH/2-120) and pygame.mouse.get_pos()[1]>=(SCREEN_HEIGHT-60):
+                        if pygame.mouse.get_pos()[0]>=(SCREEN_WIDTH-120) and pygame.mouse.get_pos()[1]>=(SCREEN_HEIGHT-60):
                             next=1
                             self.state='plansza_6_risk'
                         elif pygame.mouse.get_pos()[0]<=(300) and pygame.mouse.get_pos()[1]>=(SCREEN_HEIGHT-60):
@@ -883,7 +878,7 @@ class GameState():
                             self.state='plansza_6_leave'
 
     def plansza_6_risk(self):
-        screen.blit(tlo_zwykle_resize, (0,0)) 
+        screen.blit(tlo_zwykle_resize, (0,0)) # zmień obraz na to co potem w 5
         pygame.display.flip()
         pygame.event.pump()
         pygame.time.delay(800)
@@ -922,7 +917,7 @@ class GameState():
                 if event.type==pygame.QUIT:#Krzyżyk okna wyłącza grę
                     pygame.quit()
                 if event.type==pygame.MOUSEBUTTONDOWN: #Dwie następne linijki sprawdzają, czy mysz jest na przycisku
-                    if pygame.mouse.get_pos()[0]>=(SCREEN_WIDTH-120) and pygame.mouse.get_pos()[1]>=(SCREEN_HEIGHT-60):
+                    if pygame.mouse.get_pos()[0]>=(SCREEN_WIDTH/2+120) and pygame.mouse.get_pos()[1]>=(SCREEN_HEIGHT-60):
                         next=1
                         self.state='plansza_6_leave'
 
@@ -985,19 +980,14 @@ class GameState():
         screen.blit(textsurface0, (10, 650))
         textsurface = myfont.render('Where do you want to go now?', False, (255, 255, 255))
         screen.blit(textsurface, (10, 675))
-        textsurface2 = myfont.render('^', False, (255, 255, 255))
-        screen.blit(textsurface2, (SCREEN_WIDTH-60, SCREEN_HEIGHT-60))
         textsurface3 = myfont.render('NORTH', False, (255, 255, 255))
-        screen.blit(textsurface3, (SCREEN_WIDTH-120, SCREEN_HEIGHT-30))
+        screen.blit(textsurface3, (SCREEN_WIDTH-120, SCREEN_HEIGHT-60))
 
-        textsurface4 = myfont.render('<< WEST', False, (255, 255, 255))
+        textsurface4 = myfont.render('WEST', False, (255, 255, 255))
         screen.blit(textsurface4, (10, SCREEN_HEIGHT-60))
 
         textsurface5 = myfont.render('SOUTH', False, (255, 255, 255))
         screen.blit(textsurface5, (SCREEN_WIDTH/2-30, SCREEN_HEIGHT-60))
-
-        textsurface6 = myfont.render('V', False, (255, 255, 255))
-        screen.blit(textsurface6, (SCREEN_WIDTH/2, SCREEN_HEIGHT-30))
 
         pygame.display.update()
         #pygame.time.delay(11000)
@@ -1008,7 +998,7 @@ class GameState():
                 if event.type==pygame.QUIT:#Krzyżyk okna wyłącza grę
                     pygame.quit()
                 if event.type==pygame.MOUSEBUTTONDOWN: #Dwie następne linijki sprawdzają, czy mysz jest na przycisku
-                    if pygame.mouse.get_pos()[0]>=(SCREEN_WIDTH/2-120) and pygame.mouse.get_pos()[1]>=(SCREEN_HEIGHT-60):
+                    if pygame.mouse.get_pos()[0]>=(SCREEN_WIDTH-120) and pygame.mouse.get_pos()[1]>=(SCREEN_HEIGHT-60):
                         next=1
                         self.check_plansza3()
                     if pygame.mouse.get_pos()[0]<=(300) and pygame.mouse.get_pos()[1]>=(SCREEN_HEIGHT-60):
@@ -1017,14 +1007,679 @@ class GameState():
                     if pygame.mouse.get_pos()[0]<=(SCREEN_WIDTH/2-30) and pygame.mouse.get_pos()[0]<=(SCREEN_WIDTH/2+30) and pygame.mouse.get_pos()[1]>=(SCREEN_HEIGHT-60):
                         next=1
                         self.check_plansza9()
-
     ''' PLANSZA 7 '''
+    def plansza_7(self):
+        self.player.plansza7=True
+        screen.blit(tlo_z_mostem_resize, (0,0))
+        pygame.display.flip()
+        pygame.event.pump()
+        pygame.time.delay(800)
+        surf = pygame.Surface((1400, 250))
+        surf.fill((0, 0, 0))
+        rect= surf.get_rect()
+        screen.blit(surf, (SCREEN_WIDTH / 2-700, SCREEN_HEIGHT-250))
+        myfont = pygame.font.SysFont('Times New Roman', 22)
+        pygame.display.flip()
+        pygame.event.pump()
+        pygame.time.delay(500)
+        textsurface0 = myfont.render('There is something strange about this planet. The sand shines like glass.', False, (255, 255, 255))
+        screen.blit(textsurface0, (10, 650))
+        textsurface1 = myfont.render('You look down and a piece of paper lies by your foot. Yes, it is a page from your diary.', False, (255, 255, 255))
+        screen.blit(textsurface1, (10, 675))
+        textsurface2 = myfont.render('It has come all the way here.', False, (255, 255, 255))
+        screen.blit(textsurface2, (10, 700))
+        textsurface3 = myfont.render('NEXT >>', False, (255, 255, 255))
+        screen.blit(textsurface3, (SCREEN_WIDTH-120, SCREEN_HEIGHT-60))
 
+        pygame.display.update()
+
+        next=0
+        while next==0:
+            for event in pygame.event.get():
+                if event.type==pygame.QUIT:#Krzyżyk okna wyłącza grę
+                    pygame.quit()
+                if event.type==pygame.MOUSEBUTTONDOWN: #Dwie następne linijki sprawdzają, czy mysz jest na przycisku
+                    if pygame.mouse.get_pos()[0]>=(SCREEN_WIDTH-120) and pygame.mouse.get_pos()[1]>=(SCREEN_HEIGHT-60):
+                        next=1
+                        self.state='plansza_7_kartka'
+    def plansza_7_kartka(self):
+        screen.blit(tlo_z_mostem_resize,(0,0))
+        screen.blit(kartka_resize,(0,0)) #WSTAWIĆ KARTKE DO PLANSZY 7
+        screen.blit(cross,(SCREEN_WIDTH/2+287-110,SCREEN_HEIGHT/2-400+40))
+        pygame.display.update()
+        cancel=0
+        while cancel==0:
+            for event in pygame.event.get():
+                if event.type==pygame.QUIT:#Krzyżyk okna wyłącza grę
+                    pygame.quit()
+                if event.type==pygame.MOUSEBUTTONDOWN: #Dwie następne linijki sprawdzają, czy mysz jest na przycisku
+                    if pygame.mouse.get_pos()[0]>=(SCREEN_WIDTH/2+287-110) and pygame.mouse.get_pos()[0]<=(SCREEN_WIDTH/2+287-110+81):
+                        if pygame.mouse.get_pos()[1]>=(SCREEN_HEIGHT/2-400+40) and pygame.mouse.get_pos()[1]<=(SCREEN_HEIGHT/2-400+40+122):
+                            cancel=1
+                            self.state='plansza_7_1'
+    def plansza_7_1(self):
+        self.player.lina=True #DO TESTÓW
+
+        screen.blit(tlo_z_mostem_resize, (0,0))
+        pygame.display.flip()
+        pygame.event.pump()
+        pygame.time.delay(800)
+        surf = pygame.Surface((1400, 250))
+        surf.fill((0, 0, 0))
+        rect= surf.get_rect()
+        screen.blit(surf, (SCREEN_WIDTH / 2-700, SCREEN_HEIGHT-250))
+        myfont = pygame.font.SysFont('Times New Roman', 22)
+        pygame.display.flip()
+        pygame.event.pump()
+        pygame.time.delay(500)
+        textsurface0 = myfont.render('As you continue walking, you notice a broken bridge.', False, (255, 255, 255))
+        screen.blit(textsurface0, (10, 650))
+        if self.player.lina==1:
+            textsurface = myfont.render('"I can use that rope i gained earlier" you said.', False, (255, 255, 255))
+            screen.blit(textsurface, (10, 675))
+            textsurface2 = myfont.render('You can also go back north.', False, (255, 255, 255))
+            screen.blit(textsurface2, (10,700))
+            textsurface5 = myfont.render('TRY TO REPAIR THE BRIDGE', False, (255, 255, 255))
+            screen.blit(textsurface5, (SCREEN_WIDTH/2+120, SCREEN_HEIGHT-60))
+            textsurface4 = myfont.render('NORTH', False, (255, 255, 255))
+            screen.blit(textsurface4, (10, SCREEN_HEIGHT-60))
+            pygame.display.update()
+            next=0
+            while next==0:
+                for event in pygame.event.get():
+                    if event.type==pygame.QUIT:#Krzyżyk okna wyłącza grę
+                        pygame.quit()
+                    if event.type==pygame.MOUSEBUTTONDOWN: #Dwie następne linijki sprawdzają, czy mysz jest na przycisku
+                        if pygame.mouse.get_pos()[0]>=(SCREEN_WIDTH/2+120) and pygame.mouse.get_pos()[1]>=(SCREEN_HEIGHT-60):
+                            next=1
+                            self.state='gra_most'
+                        if pygame.mouse.get_pos()[0]<=(300) and pygame.mouse.get_pos()[1]>=(SCREEN_HEIGHT-60):
+                            next=1
+                            self.check_plansza4()
+        else:
+            textsurface = myfont.render('"I wish I had a piece of rope" you said.', False, (255, 255, 255))
+            screen.blit(textsurface, (10, 675))
+            textsurface2 = myfont.render('Nothing more to do here, you have to go back north', False, (255, 255, 255))
+            screen.blit(textsurface2, (10,700))
+            textsurface4 = myfont.render('NORTH', False, (255, 255, 255))
+            screen.blit(textsurface4, (10, SCREEN_HEIGHT-60))
+            pygame.display.update()
+            next=0
+            while next==0:
+                for event in pygame.event.get():
+                    if event.type==pygame.QUIT:#Krzyżyk okna wyłącza grę
+                        pygame.quit()
+                    if event.type==pygame.MOUSEBUTTONDOWN: #Dwie następne linijki sprawdzają, czy mysz jest na przycisku
+                        if pygame.mouse.get_pos()[0]<=(300) and pygame.mouse.get_pos()[1]>=(SCREEN_HEIGHT-60):
+                            next=1
+                            self.check_plansza4()
+
+    def gra_most(self):
+        self.angle1=90
+        self.angle2=90
+        self.angle3=0
+        self.angle4=0
+        self.angle5=0
+        self.angle6=0
+        self.angle7=90
+        self.angle8=0
+        self.angle9=180
+        self.angle10=0
+        self.angle11=0
+        self.angle12=90
+        self.state1=0
+        self.state2=0
+        self.state6=0
+        self.state10=0
+        self.state11=1
+        self.state12=0
+        self.wyjscie=False
+
+        screen.blit(tlo_z_mostem_resize,(0,0))
+        screen.blit(gra_most_tlo_resized,(0,0))
+        '''
+        POLA GRY    1  2  3  4
+                    5  6  7  8
+                    9 10 11 12
+        Ścieżka     1 2 6 10 11 12
+        '''
+        linap1=pygame.transform.rotate(lina1,self.angle1)
+        linap2=pygame.transform.rotate(lina2,self.angle2)
+        linap3=pygame.transform.rotate(lina2,self.angle3)
+        linap4=pygame.transform.rotate(lina1,self.angle4)
+        linap5=pygame.transform.rotate(lina2,self.angle5)
+        linap6=pygame.transform.rotate(lina1,self.angle6)
+        linap7=pygame.transform.rotate(lina1,self.angle7)
+        linap8=pygame.transform.rotate(lina2,self.angle8)
+        linap9=pygame.transform.rotate(lina2,self.angle9)
+        linap10=pygame.transform.rotate(lina2,self.angle10)
+        linap11=pygame.transform.rotate(lina1,self.angle11)
+        linap12=pygame.transform.rotate(lina1,self.angle12)
+        screen.blit(linap1,(300,150))
+        screen.blit(linap2,(500,150))
+        screen.blit(linap3,(700,150))
+        screen.blit(linap4,(900,150))
+
+        screen.blit(linap5,(300,350))
+        screen.blit(linap6,(500,350))
+        screen.blit(linap7,(700,350))
+        screen.blit(linap8,(900,350))
+
+        screen.blit(linap9,(300,550))
+        screen.blit(linap10,(500,550))
+        screen.blit(linap11,(700,550))
+        screen.blit(linap12,(900,550))
+        pygame.display.update()
+
+        petla=True
+        while petla==True:
+            if self.state1==1 and self.state2==1 and self.state6==1 and self.state10==1 and self.state11==1 and self.state12==1:
+                petla=False
+                self.player.most=True
+                self.state='plansza_7_2'
+            for event in pygame.event.get():
+                if event.type==pygame.QUIT:#Krzyżyk okna wyłącza grę
+                    pygame.quit()
+                if event.type==pygame.MOUSEBUTTONDOWN: #Dwie następne linijki sprawdzają, czy mysz jest na przycisku
+                    if pygame.mouse.get_pos()[0]>=(300) and pygame.mouse.get_pos()[0]<=(500):
+                        if pygame.mouse.get_pos()[1]>=(150) and pygame.mouse.get_pos()[1]<=(350):
+                            #POLE 1
+                            if self.angle1==0:
+                                self.angle1=90
+                                self.state1=0
+                            else:
+                                self.angle1=0
+                                self.state1=1
+                            screen.blit(tlo_z_mostem_resize,(0,0))
+                            screen.blit(gra_most_tlo_resized,(0,0))
+                            linap1=pygame.transform.rotate(lina1,self.angle1)
+
+                            screen.blit(linap1,(300,150))
+                            screen.blit(linap2,(500,150))
+                            screen.blit(linap3,(700,150))
+                            screen.blit(linap4,(900,150))
+
+                            screen.blit(linap5,(300,350))
+                            screen.blit(linap6,(500,350))
+                            screen.blit(linap7,(700,350))
+                            screen.blit(linap8,(900,350))
+
+                            screen.blit(linap9,(300,550))
+                            screen.blit(linap10,(500,550))
+                            screen.blit(linap11,(700,550))
+                            screen.blit(linap12,(900,550))
+                            pygame.display.update()
+
+                        elif pygame.mouse.get_pos()[1]>(350) and pygame.mouse.get_pos()[1]<=(550):
+                            #POLE 5
+                            if self.angle5==0:
+                                self.angle5=90
+                            elif self.angle5==90:
+                                self.angle5=180
+                            elif self.angle5==180:
+                                self.angle5=270
+                            else:
+                                self.angle5=0
+
+                            screen.blit(tlo_z_mostem_resize,(0,0))
+                            screen.blit(gra_most_tlo_resized,(0,0))
+                            linap5=pygame.transform.rotate(lina2,self.angle5)
+
+                            screen.blit(linap1,(300,150))
+                            screen.blit(linap2,(500,150))
+                            screen.blit(linap3,(700,150))
+                            screen.blit(linap4,(900,150))
+
+                            screen.blit(linap5,(300,350))
+                            screen.blit(linap6,(500,350))
+                            screen.blit(linap7,(700,350))
+                            screen.blit(linap8,(900,350))
+
+                            screen.blit(linap9,(300,550))
+                            screen.blit(linap10,(500,550))
+                            screen.blit(linap11,(700,550))
+                            screen.blit(linap12,(900,550))
+                            pygame.display.update()
+                        elif pygame.mouse.get_pos()[1]>(550) and pygame.mouse.get_pos()[1]<=(750):
+                            #POLE 9
+                            if self.angle9==0:
+                                self.angle9=90
+                            elif self.angle9==90:
+                                self.angle9=180
+                            elif self.angle9==180:
+                                self.angle9=270
+                            else:
+                                self.angle9=0
+
+                            screen.blit(tlo_z_mostem_resize,(0,0))
+                            screen.blit(gra_most_tlo_resized,(0,0))
+                            linap9=pygame.transform.rotate(lina2,self.angle9)
+
+                            screen.blit(linap1,(300,150))
+                            screen.blit(linap2,(500,150))
+                            screen.blit(linap3,(700,150))
+                            screen.blit(linap4,(900,150))
+
+                            screen.blit(linap5,(300,350))
+                            screen.blit(linap6,(500,350))
+                            screen.blit(linap7,(700,350))
+                            screen.blit(linap8,(900,350))
+
+                            screen.blit(linap9,(300,550))
+                            screen.blit(linap10,(500,550))
+                            screen.blit(linap11,(700,550))
+                            screen.blit(linap12,(900,550))
+                            pygame.display.update()
+                    elif pygame.mouse.get_pos()[0]>(500) and pygame.mouse.get_pos()[0]<=(700):
+                        if pygame.mouse.get_pos()[1]>=(150) and pygame.mouse.get_pos()[1]<=(350):
+                            #POLE 2
+                            if self.angle2==0:
+                                self.angle2=90
+                                self.state2=0
+                            elif self.angle2==90:
+                                self.angle2=180
+                            elif self.angle2==180:
+                                self.angle2=270
+                            else:
+                                self.angle2=0
+                                self.state2=1
+
+                            screen.blit(tlo_z_mostem_resize,(0,0))
+                            screen.blit(gra_most_tlo_resized,(0,0))
+                            linap2=pygame.transform.rotate(lina2,self.angle2)
+
+                            screen.blit(linap1,(300,150))
+                            screen.blit(linap2,(500,150))
+                            screen.blit(linap3,(700,150))
+                            screen.blit(linap4,(900,150))
+
+                            screen.blit(linap5,(300,350))
+                            screen.blit(linap6,(500,350))
+                            screen.blit(linap7,(700,350))
+                            screen.blit(linap8,(900,350))
+
+                            screen.blit(linap9,(300,550))
+                            screen.blit(linap10,(500,550))
+                            screen.blit(linap11,(700,550))
+                            screen.blit(linap12,(900,550))
+                            pygame.display.update()
+                        elif pygame.mouse.get_pos()[1]>(350) and pygame.mouse.get_pos()[1]<=(550):
+                            #POLE 6
+                            if self.angle6==0:
+                                self.angle6=90
+                                self.state6=1
+                            else:
+                                self.angle6=0
+                                self.state6=0
+                            screen.blit(tlo_z_mostem_resize,(0,0))
+                            screen.blit(gra_most_tlo_resized,(0,0))
+                            linap6=pygame.transform.rotate(lina1,self.angle6)
+
+                            screen.blit(linap1,(300,150))
+                            screen.blit(linap2,(500,150))
+                            screen.blit(linap3,(700,150))
+                            screen.blit(linap4,(900,150))
+
+                            screen.blit(linap5,(300,350))
+                            screen.blit(linap6,(500,350))
+                            screen.blit(linap7,(700,350))
+                            screen.blit(linap8,(900,350))
+
+                            screen.blit(linap9,(300,550))
+                            screen.blit(linap10,(500,550))
+                            screen.blit(linap11,(700,550))
+                            screen.blit(linap12,(900,550))
+                            pygame.display.update()
+                        elif pygame.mouse.get_pos()[1]>(550) and pygame.mouse.get_pos()[1]<=(750):
+                            #POLE 10
+                            if self.angle10==0:
+                                self.angle10=90
+                                self.state10=0
+                            elif self.angle10==90:
+                                self.angle10=180
+                                self.state10=1
+                            elif self.angle10==180:
+                                self.angle10=270
+                                self.state10=0
+                            else:
+                                self.angle10=0
+                                self.state10=0
+
+                            screen.blit(tlo_z_mostem_resize,(0,0))
+                            screen.blit(gra_most_tlo_resized,(0,0))
+                            linap10=pygame.transform.rotate(lina2,self.angle10)
+
+                            screen.blit(linap1,(300,150))
+                            screen.blit(linap2,(500,150))
+                            screen.blit(linap3,(700,150))
+                            screen.blit(linap4,(900,150))
+
+                            screen.blit(linap5,(300,350))
+                            screen.blit(linap6,(500,350))
+                            screen.blit(linap7,(700,350))
+                            screen.blit(linap8,(900,350))
+
+                            screen.blit(linap9,(300,550))
+                            screen.blit(linap10,(500,550))
+                            screen.blit(linap11,(700,550))
+                            screen.blit(linap12,(900,550))
+                            pygame.display.update()
+                    elif pygame.mouse.get_pos()[0]>(700) and pygame.mouse.get_pos()[0]<=(900):
+                        if pygame.mouse.get_pos()[1]>=(150) and pygame.mouse.get_pos()[1]<=(350):
+                            #POLE 3
+                            if self.angle3==0:
+                                self.angle3=90
+                            elif self.angle3==90:
+                                self.angle3=180
+                            elif self.angle3==180:
+                                self.angle3=270
+                            else:
+                                self.angle3=0
+
+                            screen.blit(tlo_z_mostem_resize,(0,0))
+                            screen.blit(gra_most_tlo_resized,(0,0))
+                            linap3=pygame.transform.rotate(lina2,self.angle3)
+
+                            screen.blit(linap1,(300,150))
+                            screen.blit(linap2,(500,150))
+                            screen.blit(linap3,(700,150))
+                            screen.blit(linap4,(900,150))
+
+                            screen.blit(linap5,(300,350))
+                            screen.blit(linap6,(500,350))
+                            screen.blit(linap7,(700,350))
+                            screen.blit(linap8,(900,350))
+
+                            screen.blit(linap9,(300,550))
+                            screen.blit(linap10,(500,550))
+                            screen.blit(linap11,(700,550))
+                            screen.blit(linap12,(900,550))
+                            pygame.display.update()
+                        elif pygame.mouse.get_pos()[1]>(350) and pygame.mouse.get_pos()[1]<=(550):
+                            #POLE 7
+                            if self.angle7==0:
+                                self.angle7=90
+                            else:
+                                self.angle7=0
+                            screen.blit(tlo_z_mostem_resize,(0,0))
+                            screen.blit(gra_most_tlo_resized,(0,0))
+                            linap7=pygame.transform.rotate(lina1,self.angle7)
+
+                            screen.blit(linap1,(300,150))
+                            screen.blit(linap2,(500,150))
+                            screen.blit(linap3,(700,150))
+                            screen.blit(linap4,(900,150))
+
+                            screen.blit(linap5,(300,350))
+                            screen.blit(linap6,(500,350))
+                            screen.blit(linap7,(700,350))
+                            screen.blit(linap8,(900,350))
+
+                            screen.blit(linap9,(300,550))
+                            screen.blit(linap10,(500,550))
+                            screen.blit(linap11,(700,550))
+                            screen.blit(linap12,(900,550))
+                            pygame.display.update()
+                        elif pygame.mouse.get_pos()[1]>(550) and pygame.mouse.get_pos()[1]<=(750):
+                            #POLE 11
+                            if self.angle11==0:
+                                self.angle11=90
+                                self.state11=0
+                            else:
+                                self.angle11=0
+                                self.state11=1
+                            screen.blit(tlo_z_mostem_resize,(0,0))
+                            screen.blit(gra_most_tlo_resized,(0,0))
+                            linap11=pygame.transform.rotate(lina1,self.angle11)
+
+                            screen.blit(linap1,(300,150))
+                            screen.blit(linap2,(500,150))
+                            screen.blit(linap3,(700,150))
+                            screen.blit(linap4,(900,150))
+
+                            screen.blit(linap5,(300,350))
+                            screen.blit(linap6,(500,350))
+                            screen.blit(linap7,(700,350))
+                            screen.blit(linap8,(900,350))
+
+                            screen.blit(linap9,(300,550))
+                            screen.blit(linap10,(500,550))
+                            screen.blit(linap11,(700,550))
+                            screen.blit(linap12,(900,550))
+                            pygame.display.update()
+                    elif pygame.mouse.get_pos()[0]>(900) and pygame.mouse.get_pos()[0]<=(1100):
+                        if pygame.mouse.get_pos()[1]>=(150) and pygame.mouse.get_pos()[1]<=(350):
+                            #POLE 4
+                            if self.angle4==0:
+                                self.angle4=90
+                            else:
+                                self.angle4=0
+                            screen.blit(tlo_z_mostem_resize,(0,0))
+                            screen.blit(gra_most_tlo_resized,(0,0))
+                            linap4=pygame.transform.rotate(lina1,self.angle4)
+
+                            screen.blit(linap1,(300,150))
+                            screen.blit(linap2,(500,150))
+                            screen.blit(linap3,(700,150))
+                            screen.blit(linap4,(900,150))
+
+                            screen.blit(linap5,(300,350))
+                            screen.blit(linap6,(500,350))
+                            screen.blit(linap7,(700,350))
+                            screen.blit(linap8,(900,350))
+
+                            screen.blit(linap9,(300,550))
+                            screen.blit(linap10,(500,550))
+                            screen.blit(linap11,(700,550))
+                            screen.blit(linap12,(900,550))
+                            pygame.display.update()
+                        elif pygame.mouse.get_pos()[1]>(350) and pygame.mouse.get_pos()[1]<=(550):
+                            #POLE 8
+                            if self.angle8==0:
+                                self.angle8=90
+                            elif self.angle8==90:
+                                self.angle8=180
+                            elif self.angle8==180:
+                                self.angle8=270
+                            else:
+                                self.angle8=0
+
+                            screen.blit(tlo_z_mostem_resize,(0,0))
+                            screen.blit(gra_most_tlo_resized,(0,0))
+                            linap8=pygame.transform.rotate(lina2,self.angle8)
+
+                            screen.blit(linap1,(300,150))
+                            screen.blit(linap2,(500,150))
+                            screen.blit(linap3,(700,150))
+                            screen.blit(linap4,(900,150))
+
+                            screen.blit(linap5,(300,350))
+                            screen.blit(linap6,(500,350))
+                            screen.blit(linap7,(700,350))
+                            screen.blit(linap8,(900,350))
+
+                            screen.blit(linap9,(300,550))
+                            screen.blit(linap10,(500,550))
+                            screen.blit(linap11,(700,550))
+                            screen.blit(linap12,(900,550))
+                            pygame.display.update()
+                        elif pygame.mouse.get_pos()[1]>(550) and pygame.mouse.get_pos()[1]<=(750):
+                            #POLE 12
+                            if self.angle12==0:
+                                self.angle12=90
+                                self.state12=0
+                            else:
+                                self.angle12=0
+                                self.state12=1
+                            screen.blit(tlo_z_mostem_resize,(0,0))
+                            screen.blit(gra_most_tlo_resized,(0,0))
+                            linap12=pygame.transform.rotate(lina1,self.angle12)
+
+                            screen.blit(linap1,(300,150))
+                            screen.blit(linap2,(500,150))
+                            screen.blit(linap3,(700,150))
+                            screen.blit(linap4,(900,150))
+
+                            screen.blit(linap5,(300,350))
+                            screen.blit(linap6,(500,350))
+                            screen.blit(linap7,(700,350))
+                            screen.blit(linap8,(900,350))
+
+                            screen.blit(linap9,(300,550))
+                            screen.blit(linap10,(500,550))
+                            screen.blit(linap11,(700,550))
+                            screen.blit(linap12,(900,550))
+                            pygame.display.update()
+    def plansza_7_2(self):
+        screen.blit(tlo_z_mostem_resize, (0,0))
+        pygame.display.flip()
+        pygame.event.pump()
+        pygame.time.delay(800)
+        surf = pygame.Surface((1400, 250))
+        surf.fill((0, 0, 0))
+        rect= surf.get_rect()
+        screen.blit(surf, (SCREEN_WIDTH / 2-700, SCREEN_HEIGHT-250))
+        myfont = pygame.font.SysFont('Times New Roman', 22)
+        pygame.display.flip()
+        pygame.event.pump()
+        pygame.time.delay(500)
+        textsurface0 = myfont.render('The bridge looks strong enough to walk through.', False, (255, 255, 255))
+        screen.blit(textsurface0, (10, 650))
+        textsurface = myfont.render('You can go east now', False, (255, 255, 255))
+        screen.blit(textsurface, (10, 675))
+
+        textsurface4 = myfont.render('NORTH', False, (255, 255, 255))
+        screen.blit(textsurface4, (10, SCREEN_HEIGHT-60))
+        textsurface5 = myfont.render('EAST', False, (255, 255, 255))
+        screen.blit(textsurface5, (SCREEN_WIDTH-120, SCREEN_HEIGHT-60))
+        pygame.display.update()
+
+        next=0
+        while next==0:
+            for event in pygame.event.get():
+                if event.type==pygame.QUIT:#Krzyżyk okna wyłącza grę
+                    pygame.quit()
+                if event.type==pygame.MOUSEBUTTONDOWN: #Dwie następne linijki sprawdzają, czy mysz jest na przycisku
+                    if pygame.mouse.get_pos()[0]>=(SCREEN_WIDTH/2+120) and pygame.mouse.get_pos()[1]>=(SCREEN_HEIGHT-60):
+                        next=1
+                        self.check_plansza8()
+                    if pygame.mouse.get_pos()[0]<=(300) and pygame.mouse.get_pos()[1]>=(SCREEN_HEIGHT-60):
+                        next=1
+                        self.check_plansza4()
+    def plansza_7_again_m1(self):
+        #Most zbudowany
+        screen.blit(tlo_z_mostem_resize, (0,0))
+        pygame.display.flip()
+        pygame.event.pump()
+        pygame.time.delay(800)
+        surf = pygame.Surface((1400, 250))
+        surf.fill((0, 0, 0))
+        rect= surf.get_rect()
+        screen.blit(surf, (SCREEN_WIDTH / 2-700, SCREEN_HEIGHT-250))
+        myfont = pygame.font.SysFont('Times New Roman', 22)
+        pygame.display.flip()
+        pygame.event.pump()
+        pygame.time.delay(500)
+        textsurface0 = myfont.render('The bridge looks strong enough to walk through.', False, (255, 255, 255))
+        screen.blit(textsurface0, (10, 650))
+        textsurface4 = myfont.render('NORTH', False, (255, 255, 255))
+        screen.blit(textsurface4, (10, SCREEN_HEIGHT-60))
+        textsurface5 = myfont.render('EAST', False, (255, 255, 255))
+        screen.blit(textsurface5, (SCREEN_WIDTH-120, SCREEN_HEIGHT-60))
+        pygame.display.update()
+
+        next=0
+        while next==0:
+            for event in pygame.event.get():
+                if event.type==pygame.QUIT:#Krzyżyk okna wyłącza grę
+                    pygame.quit()
+                if event.type==pygame.MOUSEBUTTONDOWN: #Dwie następne linijki sprawdzają, czy mysz jest na przycisku
+                    if pygame.mouse.get_pos()[0]>=(SCREEN_WIDTH/2+120) and pygame.mouse.get_pos()[1]>=(SCREEN_HEIGHT-60):
+                        next=1
+                        self.check_plansza8()
+                    if pygame.mouse.get_pos()[0]<=(300) and pygame.mouse.get_pos()[1]>=(SCREEN_HEIGHT-60):
+                        next=1
+                        self.check_plansza4()
+
+    def plansza_7_again_m2(self):
+        #Most niezbudowany
+        self.state=='plansza_7_1'
     ''' PLANSZA 8 '''
-
+    def plansza_8(self):
+        self.player.plansza8=True
+        if self.player.most==True:
+            screen.blit(tlo_z_mostem_resize, (0,0))
+            pygame.display.flip()
+            pygame.event.pump()
+            pygame.time.delay(800)
+            surf = pygame.Surface((1400, 250))
+            surf.fill((0, 0, 0))
+            rect= surf.get_rect()
+            screen.blit(surf, (SCREEN_WIDTH / 2-700, SCREEN_HEIGHT-250))
+            myfont = pygame.font.SysFont('Times New Roman', 22)
+            pygame.display.flip()
+            pygame.event.pump()
+            pygame.time.delay(500)
+            textsurface0 = myfont.render('The bridge looks strong enough to walk through... Where would you like to go?', False, (255, 255, 255))
+            screen.blit(textsurface0, (10, 650))
+            textsurface4 = myfont.render('NORTH', False, (255, 255, 255))
+            screen.blit(textsurface4, (10, SCREEN_HEIGHT-60))
+            textsurface5 = myfont.render('EAST', False, (255, 255, 255))
+            screen.blit(textsurface5, (SCREEN_WIDTH-120, SCREEN_HEIGHT-60))
+            textsurface6 = myfont.render('WEST', False, (255, 255, 255))
+            screen.blit(textsurface6, (SCREEN_WIDTH/2-60, SCREEN_HEIGHT-60))
+            pygame.display.update()
+            next=0
+            while next==0:
+                for event in pygame.event.get():
+                    if event.type==pygame.QUIT:#Krzyżyk okna wyłącza grę
+                        pygame.quit()
+                    if event.type==pygame.MOUSEBUTTONDOWN: #Dwie następne linijki sprawdzają, czy mysz jest na przycisku
+                        if pygame.mouse.get_pos()[0]>=(SCREEN_WIDTH/2+120) and pygame.mouse.get_pos()[1]>=(SCREEN_HEIGHT-60):
+                            next=1
+                            self.check_plansza9()
+                        if pygame.mouse.get_pos()[0]<=(300) and pygame.mouse.get_pos()[1]>=(SCREEN_HEIGHT-60):
+                            next=1
+                            self.check_plansza5()
+                        if pygame.mouse.get_pos()[0]>=(SCREEN_WIDTH/2-60) and pygame.mouse.get_pos()[0]<=(SCREEN_WIDTH/2+60) and pygame.mouse.get_pos()[1]>=(SCREEN_HEIGHT-60):
+                            next=1
+                            self.check_plansza7()
+        else:
+            screen.blit(tlo_z_mostem_resize, (0,0))
+            pygame.display.flip()
+            pygame.event.pump()
+            pygame.time.delay(800)
+            surf = pygame.Surface((1400, 250))
+            surf.fill((0, 0, 0))
+            rect= surf.get_rect()
+            screen.blit(surf, (SCREEN_WIDTH / 2-700, SCREEN_HEIGHT-250))
+            myfont = pygame.font.SysFont('Times New Roman', 22)
+            pygame.display.flip()
+            pygame.event.pump()
+            pygame.time.delay(500)
+            textsurface0 = myfont.render('The bridge is broken and you cannot go through it.', False, (255, 255, 255))
+            screen.blit(textsurface0, (10, 650))
+            textsurface0 = myfont.render('You could try to build it from the other side.', False, (255, 255, 255))
+            screen.blit(textsurface0, (10, 675))
+            textsurface4 = myfont.render('NORTH', False, (255, 255, 255))
+            screen.blit(textsurface4, (10, SCREEN_HEIGHT-60))
+            textsurface5 = myfont.render('EAST', False, (255, 255, 255))
+            screen.blit(textsurface5, (SCREEN_WIDTH-120, SCREEN_HEIGHT-60))
+            pygame.display.update()
+            next=0
+            while next==0:
+                for event in pygame.event.get():
+                    if event.type==pygame.QUIT:#Krzyżyk okna wyłącza grę
+                        pygame.quit()
+                    if event.type==pygame.MOUSEBUTTONDOWN: #Dwie następne linijki sprawdzają, czy mysz jest na przycisku
+                        if pygame.mouse.get_pos()[0]>=(SCREEN_WIDTH/2+120) and pygame.mouse.get_pos()[1]>=(SCREEN_HEIGHT-60):
+                            next=1
+                            self.check_plansza9()
+                        if pygame.mouse.get_pos()[0]<=(300) and pygame.mouse.get_pos()[1]>=(SCREEN_HEIGHT-60):
+                            next=1
+                            self.check_plansza5()
 
     ''' PLANSZA 9 '''
-
 
     ''' PLANSZA GAME OVER'''
 
@@ -1041,6 +1696,19 @@ class GameState():
 
         pygame.quit()
 
+    '''CONGRATULATIONS'''
+    def congratulations(self):
+        screen.fill((0, 0, 0))
+        riddlefont = pygame.font.SysFont('Times New Roman', 80)
+
+        textsurface = riddlefont.render("CONGRATULATIONS", False, (255, 255, 255))
+        screen.blit(textsurface, (300, 400))
+
+        pygame.display.update()
+        pygame.event.pump()
+        pygame.time.delay(4000)
+
+        pygame.quit()
     ''' STATE MENAGER '''
     def state_menager(self):
         if self.state=='intro_menu':
@@ -1081,7 +1749,37 @@ class GameState():
             self.plansza_4_hi()
         elif self.state == 'game_over':
             self.game_over()
-            
+        elif self.state== 'plansza_6':
+            self.plansza_6()
+        elif self.state =='plansza_6_risk':
+            self.plansza_6_risk()
+        elif self.state == 'plansza_6_leave':
+            self.plansza_6_leave()
+        elif self.state== 'plansza_6_again':
+            self.plansza_6_again()
+        elif self.state=='gra_most':
+            self.gra_most()
+        elif self.state=='plansza_7':
+            self.plansza_7()
+        elif self.state=='plansza_7_1':
+            self.plansza_7_1()
+        elif self.state=='plansza_7_kartka':
+            self.plansza_7_kartka()
+        elif self.state=='plansza_7_2':
+            self.plansza_7_2()
+        elif self.state=='plansza_7_again_m1':
+            self.plansza_7_again_m1()
+        elif self.state=='plansza_7_again_m2':
+            self.plansza_7_again_m2()
+        elif self.state=='plansza_8':
+            self.plansza_8()
+        elif self.state=='plansza_finish':
+            self.plansza_finish()
+        elif self.state=='plansza_startowanie':
+            self.plansza_startowanie()
+        elif self.state=='congratulations':
+            self.congratulations()
+
 #inicjalizacja pygame
 pygame.init()
 clock=pygame.time.Clock()
@@ -1106,11 +1804,24 @@ background_resized=pygame.transform.scale(background, (SCREEN_WIDTH,SCREEN_HEIGH
 #Intro menu
 emergency_txt=pygame.image.load('emergency.png')
 red_button=pygame.image.load("rec.png")
-background_menu=pygame.image.load('tlo_menu.jpg')
+background_menu=pygame.image.load('Kokpit.PNG')
 background_menu_resized=pygame.transform.scale(background_menu, (SCREEN_WIDTH,SCREEN_HEIGHT))
 statek=pygame.image.load('ship.png')
 statek_rotated=pygame.transform.rotate(statek,-90)
+statek_rotated2=pygame.transform.rotate(statek,90)
 danger=pygame.image.load('caution.png')
+
+#plansza_6
+tlo_zwykle=pygame.image.load('tło.png')
+tlo_zwykle_resize=pygame.transform.scale(tlo_zwykle,(SCREEN_WIDTH,SCREEN_HEIGHT))
+
+#GRA BUDOWANIE MOSTU
+gra_most_tlo=pygame.image.load('most_tlo.png')
+gra_most_tlo_resized=pygame.transform.scale(gra_most_tlo,(1400,900))
+lina1=pygame.image.load('lina_prosta.png')
+tlo_z_mostem=pygame.image.load('most.PNG')
+tlo_z_mostem_resize=pygame.transform.scale(tlo_z_mostem,(1400,900))
+lina2=pygame.image.load('lina_skret.png')
 #plansza 2
 background_plansza2=pygame.image.load('rakieta.PNG')
 background_plansza2_resize = pygame.transform.scale(background_plansza2, (SCREEN_WIDTH,SCREEN_HEIGHT))
@@ -1122,9 +1833,10 @@ plansza_zwykla = pygame.image.load('tło.png')
 plansza_zwykla_resize = pygame.transform.scale(plansza_zwykla, (SCREEN_WIDTH,SCREEN_HEIGHT))
 #plansza 4 / 9
 plansza_kosmita = pygame.image.load('kosmita.png')
-plansza_kosmita = pygame.transform.scale(plansza_kosmita, (SCREEN_WIDTH,SCREEN_HEIGHT))
-
+plansza_kosmita_resize = pygame.transform.scale(plansza_kosmita, (SCREEN_WIDTH,SCREEN_HEIGHT))
 #MAIN GAME LOOP
+
+
 running=True
 while running:
 
