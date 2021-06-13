@@ -2164,7 +2164,7 @@ danger=pygame.image.load('caution.png')
 #plansza_6
 tlo_zwykle=pygame.image.load('tło.png')
 tlo_zwykle_resize=pygame.transform.scale(tlo_zwykle,(SCREEN_WIDTH,SCREEN_HEIGHT))
-plansza1=plansza_zwykla_resize
+
 #GRA BUDOWANIE MOSTU
 kartka_most=pygame.image.load('kartka_z_pamietnika_most.png')
 kartka_most_resize= pygame.transform.scale(kartka_most,(SCREEN_WIDTH,SCREEN_HEIGHT))
@@ -2186,6 +2186,7 @@ plansza_zwykla_resize = pygame.transform.scale(plansza_zwykla, (SCREEN_WIDTH,SCR
 #plansza 4 / 9
 plansza_kosmita = pygame.image.load('kosmita.png')
 plansza_kosmita_resize = pygame.transform.scale(plansza_kosmita, (SCREEN_WIDTH,SCREEN_HEIGHT))
+plansza1=plansza_zwykla_resize
 #MAIN GAME LOOP
 
 
