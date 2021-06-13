@@ -399,7 +399,7 @@ class GameState():
 
 
     def plansza_1_2(self):
-        screen.blit(plansza1, (0,0))
+        screen.blit(plansza_zwykla_resize, (0,0))
         surf = pygame.Surface((1400, 250))
         surf.fill((0, 0, 0))
         rect= surf.get_rect()
