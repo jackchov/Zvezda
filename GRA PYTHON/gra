@@ -7,10 +7,10 @@ class GameState():
 
 
     def __init__(self):
-        #self.state='gra_most' #TESTY
+
+        #self.state='plansza_5_1' #TESTY
         self.state='intro_menu' #REAL GAME
         self.player=Player()
-
     ''' Tutaj są metody do sprawdzania czy gracz był na danej planszy,'''
 
     def check_plansza1(self):
@@ -73,6 +73,8 @@ class GameState():
 
     def intro_menu(self):
         #print(pygame.mouse.get_pos()) #Wyświetlanie aktualnej pozycji myszy do testów
+        alarm = pygame.mixer.Sound('alarm.wav')
+        pygame.mixer.Sound.play(alarm)
         buttn_click=0
         danger_flag=0
         while buttn_click==0:
@@ -138,6 +140,7 @@ class GameState():
         pygame.display.flip()
         pygame.event.pump()
         pygame.time.delay(500)
+        pygame.mixer.music.play(-1)
 
 
             #zawijanie tekstu okazało się bardziej skomplikowane, na razie wypisuje każda linjke osobno
@@ -533,11 +536,11 @@ class GameState():
 
         if user_text == 'south' or user_text == 'the south':
             textsurface3 = myfont.render("You decided to move towards the South", False, (255, 255, 255))
-            screen.blit(textsurface3, (100, 675))
+            screen.blit(textsurface3, (100, 750))
             pygame.display.flip()
 
             pygame.time.delay(3000)
-            self.state = 'plansza_6_1'
+            self.check_plansza6()
 
         if user_text == 'inside' or user_text == 'go inside':
             textsurface3 = myfont.render("You decided to go inside", False, (255, 255, 255))
@@ -1047,6 +1050,7 @@ class GameState():
 
         textsurface0 = myfont.render('Nothing is happening. You decide to continue moving', False, (255, 255, 255))
         screen.blit(textsurface0, (10, 675))
+        pygame.display.update()
 
         pygame.time.delay(4000)
         self.state = 'move_from5'
@@ -1314,7 +1318,7 @@ class GameState():
                             cancel=1
                             self.state='plansza_7_1'
     def plansza_7_1(self):
-        self.player.lina=True #DO TESTÓW
+        #self.player.lina=True #DO TESTÓW
 
         screen.blit(tlo_z_mostem_resize, (0,0))
         pygame.display.flip()
@@ -1938,18 +1942,18 @@ class GameState():
     ''' PLANSZA 9 '''
     def plansza_9(self):
         self.player.plansza9 = True
-        screen.blit(plansza_kosmita, (0, 0))
-        pygame.display.flip()
-        pygame.event.pump()
-        pygame.time.delay(800)
+        screen.blit(plansza_kosmita_resize, (0, 0))
+        #pygame.display.flip()
+        #pygame.event.pump()
+        #pygame.time.delay(800)
         surf = pygame.Surface((1400, 250))
         surf.fill((0, 0, 0))
         rect = surf.get_rect()
         screen.blit(surf, (SCREEN_WIDTH / 2 - 700, SCREEN_HEIGHT - 250))
         myfont = pygame.font.SysFont('Times New Roman', 22)
         pygame.display.flip()
-        pygame.event.pump()
-        pygame.time.delay(500)
+        #pygame.event.pump()
+        #pygame.time.delay(500)
 
         textsurface = myfont.render(
             'After wandering for long distance you notice an alien standing next to what appears to be page from your notebook',
@@ -1973,7 +1977,7 @@ class GameState():
         screen.blit(textsurface3, (10, 725))
 
         pygame.display.flip()
-        pygame.event.pump()
+        #pygame.event.pump()
         pygame.time.delay(100)
         pygame.display.update()
         if user_text == 'attack':
@@ -1981,28 +1985,30 @@ class GameState():
                                          (255, 255, 255))
             screen.blit(textsurface5, (10, 750))
             pygame.display.flip()
-            self.state = game_over
+            pygame.time.delay(500)
+            self.state = 'game_over'
         if user_text == 'approach slowly':
             textsurface5 = myfont.render('It worked! The alien did not see you coming at all.', False,
                                          (255, 255, 255))
             screen.blit(textsurface5, (10, 750))
             pygame.display.flip()
             self.player.kartka4 = True
+            pygame.time.delay(500)
             self.state = 'plansza_9_1'
 
     def plansza_9_1(self):
-        screen.blit(plansza_kosmita, (0, 0))
+        screen.blit(plansza_zwykla_resize, (0, 0))
         pygame.display.flip()
-        pygame.event.pump()
-        pygame.time.delay(800)
+        #pygame.event.pump()
+        #pygame.time.delay(800)
         surf = pygame.Surface((1400, 250))
         surf.fill((0, 0, 0))
         rect = surf.get_rect()
         screen.blit(surf, (SCREEN_WIDTH / 2 - 700, SCREEN_HEIGHT - 250))
         myfont = pygame.font.SysFont('Times New Roman', 22)
-        pygame.display.flip()
-        pygame.event.pump()
-        pygame.time.delay(500)
+        #pygame.display.flip()
+        #pygame.event.pump()
+        #pygame.time.delay(500)
 
         textsurface = myfont.render(
             'Where to go now? From here you can go north and west',
@@ -2011,10 +2017,13 @@ class GameState():
         screen.blit(textsurface, (10, 650))
         textsurface3 = myfont.render(user_text, True, (255, 255, 255))
         screen.blit(textsurface3, (10, 675))
+        pygame.display.flip()
         if user_text == 'north':
-            self.state = 'plansza6'
+            self.check_plansza6()
         if user_text == 'south':
-            self.stage = 'plansza8'
+            self.check_plansza8()
+
+
 
     ''' PLANSZA GAME OVER'''
 
@@ -2072,6 +2081,8 @@ class GameState():
             self.plansza_5_2()
         elif self.state == 'move_from5':
             self.move_from5()
+        elif self.state=='plansza_5_again':
+            self.plansza_5_again()
         elif self.state == 'plansza_4':
             self.plansza_4()
         elif self.state =='plansza_4_again':
@@ -2135,6 +2146,7 @@ class GameState():
 pygame.init()
 clock=pygame.time.Clock()
 game_state=GameState()
+music = pygame.mixer.music.load('night in the desert.mp3')
 
 #Tworzenie okna głównego
 SCREEN_WIDTH = 1400
